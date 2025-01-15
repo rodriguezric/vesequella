@@ -227,8 +227,18 @@ func baton_tavern_room():
             return
 
 func baton_library_room():
-    pass
+    var menu_idx
+    var book_idx
 
+    while true:
+        var text = ""
+        menu_idx = await IO.menu([], text)
+
+        if menu_idx == 0:
+            pass
+        elif menu_idx == 1:
+            pass
+        break
 # World Rooms
 func world_baton_room():
     pass
