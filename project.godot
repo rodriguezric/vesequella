@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Vesequella"
+run/main_scene="res://title.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/image="res://images/VesequellaCover.png"
+config/icon="res://icon.svg"
+
+[autoload]
+
+SKILL="*res://scripts/skill.gd"
+CTX="*res://scripts/ctx.gd"
+IO="*res://io.tscn"
+VFX="*res://singletons/vfx.tscn"
+SFX="*res://singletons/sfx.tscn"
+OP="*res://scripts/op.gd"
+BATTLE="*res://scripts/battle.gd"
+ROOM="*res://scripts/room.gd"
+MUSIC="*res://singletons/music.tscn"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=720
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
+[gui]
+
+theme/custom_font="res://fonts/prstart.ttf"
+theme/default_font_antialiasing=0
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

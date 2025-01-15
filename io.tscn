@@ -1,0 +1,251 @@
+[gd_scene load_steps=9 format=3 uid="uid://btkn8cndv3tno"]
+
+[ext_resource type="Script" path="res://scripts/io.gd" id="1_chw1k"]
+[ext_resource type="Theme" uid="uid://8c4dt20nruvo" path="res://io.tres" id="2_cd5wq"]
+[ext_resource type="FontFile" uid="uid://cetimtkdjojjd" path="res://fonts/prstart.ttf" id="3_44a63"]
+[ext_resource type="Script" path="res://scripts/box_menu.gd" id="3_yj6my"]
+[ext_resource type="Script" path="res://scripts/grid_menu.gd" id="4_nvxd1"]
+
+[sub_resource type="Animation" id="Animation_qe3eq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WindowMessage:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gxmft"]
+resource_name = "shake_window"
+length = 0.2667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WindowMessage:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-5, 0), Vector2(0, 0), Vector2(5, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_edcvl"]
+_data = {
+"RESET": SubResource("Animation_qe3eq"),
+"shake_window": SubResource("Animation_gxmft")
+}
+
+[node name="IO" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_filter = 1
+script = ExtResource("1_chw1k")
+
+[node name="WindowMessage" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 191.0
+grow_horizontal = 2
+
+[node name="Panel" type="Panel" parent="WindowMessage"]
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("2_cd5wq")
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowMessage"]
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="WindowMessage/MarginContainer"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_44a63")
+theme_override_font_sizes/font_size = 14
+text = "testing"
+uppercase = true
+max_lines_visible = 9
+
+[node name="Timer" type="Timer" parent="WindowMessage"]
+wait_time = 0.1
+
+[node name="AdvanceButton" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -56.0
+offset_top = -168.0
+offset_bottom = -112.0
+grow_horizontal = 0
+grow_vertical = 2
+text = ">"
+
+[node name="VMenu" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -150.0
+offset_right = 43.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_yj6my")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 190.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="GridMenuPanel" type="Panel" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_cd5wq")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="GridMenu" type="GridContainer" parent="MarginContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+columns = 2
+script = ExtResource("4_nvxd1")
+
+[node name="LineEditContainer" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 269.0
+offset_right = 160.0
+offset_bottom = 293.0
+grow_horizontal = 2
+
+[node name="LineEdit" type="LineEdit" parent="LineEditContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_length = 30
+
+[node name="LineEditSubmit" type="Button" parent="LineEditContainer"]
+layout_mode = 2
+text = "SUBMIT"
+
+[node name="ap" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_edcvl")
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HeroStatsContainer" type="CenterContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HeroStatsContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HeroStatsContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "NAME"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HPContainer" type="HBoxContainer" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HPTextLabel" type="Label" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HPContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP"
+
+[node name="HPValLabel" type="Label" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/HPContainer"]
+layout_mode = 2
+text = "10"
+
+[node name="SPContaner" type="HBoxContainer" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SPTextLabel" type="Label" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SPContaner"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SP"
+
+[node name="SPValLabel" type="Label" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SPContaner"]
+layout_mode = 2
+text = "10"

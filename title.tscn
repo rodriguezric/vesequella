@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn8uuaaf8qi0i"]
+
+[ext_resource type="Texture2D" uid="uid://conarbt4nq4ib" path="res://images/VesequellaCover.png" id="1_5ynfl"]
+[ext_resource type="Script" path="res://scripts/title_scene.gd" id="1_rvsda"]
+
+[node name="TitleScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rvsda")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("1_5ynfl")
+expand_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -103.0
+offset_right = 60.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 126
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect/MarginContainer"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "START"
+
+[node name="OptionsButton" type="Button" parent="TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "OPTIONS"
+
+[node name="QuitButton" type="Button" parent="TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
