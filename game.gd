@@ -203,7 +203,28 @@ func baton_store_room():
     pass
 
 func baton_tavern_room():
-    pass
+    var menu_idx
+    var invn_idx
+    var talk_idx
+
+    while true:
+        var text = "\"A lively tavern filled with the warm glow of lanterns, the scent of spiced cider, and the cheerful murmur of travelers and townsfolk sharing tales.\""
+        menu_idx = await IO.menu(["TALK", "LEAVE"], text)
+
+        if menu_idx == 0:
+            var people = ["OLD MAN", "BOY", "CANCEL"]
+            talk_idx = await IO.menu(people, "Who do you want to talk to?")
+
+            if talk_idx == 0:
+                # this guy can make slime boots
+                await IO.scroll_text("The old man greets you with a smile raising his mug.")
+            elif talk_idx == 1:
+                # this is a quest for the slime collector
+                await IO.scroll_text("The boy text")
+        if menu_idx == 1:
+            await IO.scroll_text("You leave the tavern.")
+            baton_town_room()
+            return
 
 func baton_library_room():
     pass
