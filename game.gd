@@ -172,6 +172,8 @@ func baton_town_room():
             baton_library_room()
             return
         elif menu_idx == 4:
+            await IO.scroll_text("You leave the town")
+
             world_baton_room()
             return
 
@@ -274,4 +276,24 @@ func baton_library_room():
 
 # World Rooms
 func world_baton_room():
-    pass
+    var menu_idx
+    var move_idx
+    var invn_idx
+
+    while true:
+        menu_idx = await IO.menu(
+            ["ENTER", "MOVE", "ITEM"],
+            "You see a bustling town nestled at the crossroads of trade and magic, its spires of the academy gleaming against the horizon.",
+        )
+
+        if menu_idx == 0:
+            await IO.scroll_text("You enter the town.")
+            baton_town_room()
+            return
+        elif menu_idx == 1:
+            move_idx = await IO.menu(["WEST", "EAST"], "Which direction will you move?")
+            await IO.show_text(["WEST", "EAST"][move_idx])
+        elif menu_idx == 2:
+            invn_idx == await IO.show_inventory()
+            if invn_idx:
+                await IO.show_text(CTX.inventory[invn_idx])
