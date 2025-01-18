@@ -208,7 +208,7 @@ func baton_tavern_room():
     var talk_idx
 
     while true:
-        var text = "\"A lively tavern filled with the warm glow of lanterns, the scent of spiced cider, and the cheerful murmur of travelers and townsfolk sharing tales.\""
+        var text = "Lanterns cast a warm glow over the room, the scent of spiced cider fills the air, and the cheerful murmur of travelers and townsfolk sharing tales surrounds you."
         menu_idx = await IO.menu(["TALK", "LEAVE"], text)
 
         if menu_idx == 0:
@@ -231,14 +231,47 @@ func baton_library_room():
     var book_idx
 
     while true:
-        var text = ""
-        menu_idx = await IO.menu([], text)
+        var text = "Towering shelves of ancient tomes surround you, the air thick with the scent of parchment and the whispers of forgotten knowledge."
+        menu_idx = await IO.menu(["BOOK OF POTIONS", "BOOK OF BEASTS", "BOOK OF MAGIC", "LEAVE"], text)
 
         if menu_idx == 0:
-            pass
+            book_idx = await IO.menu(["INTRO", "USES", "ELIXER", "CLOSING", "CANCEL"], "Which chapter would you like to read?")
+
+            if book_idx == 0:
+                await proc_text_list([
+                    "INTRO",
+                    "Potions are essential for magical healing, offering solutions for injuries and illnesses that can be stored and used as needed.",
+                    "Healing potions typically use a blend of natural herbs, mystical extracts, and magical catalysts to trigger restorative effects.",
+                ])
+            elif book_idx == 1:
+                await proc_text_list([
+                    "USES",
+                    "A single versatile potion can serve a variety of healing purposes. It can rehydrate the body, soothing the effects of dehydration and restoring lost vitality.",
+                    "The same potion can mend minor wounds, closing small cuts and easing bruises with a calming, restorative effect.",
+                    "In addition, it can enhance mental clarity, clearing distractions and sharpening focus, making it ideal for moments requiring concentration or during physical exhaustion.",
+                ])
+            elif book_idx == 2:
+                await proc_text_list([
+                    "ELIXER",
+                    "The Elixer is a mythical potion said to grant godlike powers and the ability to lift even the darkest curses.",
+                    "Legends speak of a young alchemist who created The Elixer to save their village from a plague and a curse. Though they succeeded, the alchemist vanished, sparking rumors of the potion's hidden price.",
+                    "While its recipe remains lost, The Elixer inspires alchemists to pursue mastery with caution and responsibility.",
+                ])
+            elif book_idx == 3:
+                await proc_text_list([
+                    "CLOSING",
+                    "Potion-making is a delicate and rewarding art. From simple healing draughts to legendary brews, potions remind us of their power to transform lives.",
+                ])
+
         elif menu_idx == 1:
-            pass
-        break
+            await IO.scroll_text("You open the Book of Beasts.")
+        elif menu_idx == 2:
+            await IO.scroll_text("You open the Book of Magic.")
+        elif menu_idx == 3:
+            await IO.scroll_text("You leave the tavern.")
+            baton_town_room()
+            return
+
 # World Rooms
 func world_baton_room():
     pass

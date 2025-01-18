@@ -74,10 +74,6 @@ func scroll_text_impl(_text: String):
 
 func append_text_impl(_text: String):
     var visible_characters = label.visible_characters
-    var message_lines = label.text.split("\n")
-    if message_lines.size() > 3:
-        label.text = "\n".join(message_lines.slice(1))
-        visible_characters = label.text.length()
     label.text += "\n" + _text
     label.visible_characters = visible_characters
     visible = true
