@@ -268,7 +268,7 @@ func baton_library_room():
         elif menu_idx == 2:
             await IO.scroll_text("You open the Book of Magic.")
         elif menu_idx == 3:
-            await IO.scroll_text("You leave the tavern.")
+            await IO.scroll_text("You leave the library.")
             baton_town_room()
             return
 
