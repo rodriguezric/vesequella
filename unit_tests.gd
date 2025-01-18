@@ -5,7 +5,7 @@ func _ready() -> void:
     test_io_text_lines_increase_instead_of_cutitng_off()
 
 func test_io_text_lines_increase_instead_of_cutitng_off():
-    #
+    # Enforce IO.MAX_LINES
     timer.timeout.connect(simulate_advance_text)
     timer.start(0.01)
     var texts = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
