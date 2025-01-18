@@ -28,6 +28,8 @@ var text := ""
 var finished := false
 var active := true
 
+const MAX_LINES = 9
+
 func show_text(_text: String, close_flg := true):
     show_text_impl(_text)
 
@@ -54,6 +56,7 @@ func append_text(_text: String, close_flg := true):
 func show_text_impl(_text: String):
     text = _text
     label.text = _text
+    label.lines_skipped = 0
     label.visible_characters = label.get_total_character_count()
     visible = true
     window_message.visible = true
@@ -64,6 +67,7 @@ func show_text_impl(_text: String):
 func scroll_text_impl(_text: String):
     text = _text
     label.text = _text
+    label.lines_skipped = 0
     label.visible_characters = 0
     visible = true
     window_message.visible = true
@@ -185,6 +189,8 @@ func advance_text():
 func _on_timer_timeout() -> void:
     if visible and not finished:
         label.visible_characters += 1
+        if label.get_line_count() > MAX_LINES:
+            label.lines_skipped = label.get_line_count() - MAX_LINES
         if label.visible_characters >= label.get_total_character_count():
             finished = true
             finished_displaying_text.emit()
