@@ -291,15 +291,15 @@ func world_baton_room():
             baton_town_room()
             return
         elif menu_idx == 1:
-            var move_list = ["WEST", "EAST"]
+            var move_list = ["WEST", "EAST", "CANCEL"]
             move_idx = await IO.menu(move_list, "Which direction will you move?")
-            if move_idx > -1:
+            if move_idx > -1 and move_idx < move_list.size() - 1:
                 await IO.scroll_text("You travel %s" % move_list[move_idx])
 
             if move_idx == 0:
                 world_west_of_baton_room()
                 return
-            if move_idx == 0:
+            if move_idx == 1:
                 pass
                 #world_east_of_baton_room()
                 #return
@@ -319,10 +319,20 @@ func world_west_of_baton_room():
             "A dirt road cuts through the endless grasslands, stretching east and west; to the west, the plains roll on undisturbed, while to the east, the air grows heavier with the faint hum of distant voices and the scent of woodsmoke, hinting at nearby life.",
         )
 
-        if menu_idx == 1:
-            move_idx = await IO.menu(["WEST", "EAST"], "Which direction will you move?")
-            await IO.show_text(["WEST", "EAST"][move_idx])
-        elif menu_idx == 2:
+        if menu_idx == 0:
+            var move_list = ["WEST", "EAST", "CANCEL"]
+            move_idx = await IO.menu(move_list, "Which direction will you move?")
+            if move_idx > -1 and move_idx < move_list.size() - 1:
+                await IO.scroll_text("You travel %s" % move_list[move_idx])
+
+            if move_idx == 0:
+                pass
+                # west of west of baton
+                #return
+            if move_idx == 1:
+                world_baton_room()
+                return
+        elif menu_idx == 1:
             invn_idx == await IO.show_inventory()
             if invn_idx:
                 await IO.show_text(CTX.inventory[invn_idx])
