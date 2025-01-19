@@ -8,6 +8,8 @@ var debug_scene_map = {
 
 var rng = RandomNumberGenerator.new()
 
+@onready var baton_world_node: WorldNode = $World/Baton
+
 var switches = {
     "baton_professor_quest_received": false,
     "baton_professor_quest_completed": false,
@@ -173,8 +175,7 @@ func baton_town_room():
             return
         elif menu_idx == 4:
             await IO.scroll_text("You leave the town")
-
-            world_baton_room()
+            baton_world_node.run()
             return
 
 func baton_store_room():
