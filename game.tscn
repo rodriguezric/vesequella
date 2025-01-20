@@ -27,8 +27,16 @@ description = "A dirt road cuts through the endless grasslands, stretching east 
 east_node = NodePath("../Baton")
 game_node = NodePath("../..")
 
-[node name="BE1" type="Node" parent="World" node_paths=PackedStringArray("west_node", "game_node")]
+[node name="BE1" type="Node" parent="World" node_paths=PackedStringArray("east_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Endless plains stretch beneath a brilliant sky; to the east, a dark forest looms, while the west hums with the warmth of civilization."
+east_node = NodePath("../Senlin")
 west_node = NodePath("../Baton")
 game_node = NodePath("../..")
+
+[node name="Senlin" type="Node" parent="World" node_paths=PackedStringArray("west_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "Twisted trees claw at the dim sky, their gnarled roots tangled in a suffocating gloom that whispers of unseen perils. A sign at the entrance to the forest reads \"Senlin\"."
+west_node = NodePath("../BE1")
+game_node = NodePath("../..")
+enter_function = "senlin_entrance_room"
