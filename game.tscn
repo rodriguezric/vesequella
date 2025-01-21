@@ -13,21 +13,13 @@ debug_scene = 1
 script = ExtResource("2_114ai")
 game_node = NodePath("../..")
 
-[node name="BS1" type="Node" parent="World" node_paths=PackedStringArray("north_node", "east_node", "game_node")]
+[node name="BS1" type="Node" parent="World" node_paths=PackedStringArray("north_node", "south_node", "east_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Vast plains ripple with golden grasses, the air growing lively to the north and cold with a biting edge toward the south."
 north_node = NodePath("../Baton")
+south_node = NodePath("../Toiyun")
 east_node = NodePath("../BE2")
 game_node = NodePath("../..")
-
-[node name="Baton" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
-script = ExtResource("2_114ai")
-description = "You see a bustling town nestled at the crossroads of trade and magic, its spires of the academy gleaming against the horizon."
-south_node = NodePath("../BS1")
-east_node = NodePath("../BE1")
-west_node = NodePath("../BW1")
-game_node = NodePath("../..")
-enter_function = "baton_town_room"
 
 [node name="BW1" type="Node" parent="World" node_paths=PackedStringArray("east_node", "game_node")]
 script = ExtResource("2_114ai")
@@ -50,9 +42,24 @@ north_node = NodePath("../BE1")
 west_node = NodePath("../BS1")
 game_node = NodePath("../..")
 
+[node name="Baton" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "You see a bustling town nestled at the crossroads of trade and magic, its spires of the academy gleaming against the horizon."
+south_node = NodePath("../BS1")
+east_node = NodePath("../BE1")
+west_node = NodePath("../BW1")
+game_node = NodePath("../..")
+enter_function = "baton_town_room"
+
 [node name="Senlin" type="Node" parent="World" node_paths=PackedStringArray("west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Twisted trees claw at the dim sky, their gnarled roots tangled in a suffocating gloom that whispers of unseen perils. A sign at the entrance to the forest reads \"Senlin\"."
 west_node = NodePath("../BE1")
 game_node = NodePath("../..")
 enter_function = "senlin_entrance_room"
+
+[node name="Toiyun" type="Node" parent="World" node_paths=PackedStringArray("north_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "You stand at the entrance of an ice cave, its jagged frost glistening like frozen teeth, the oppressive silence heavy with the weight of countless lost lives."
+north_node = NodePath("../BS1")
+game_node = NodePath("../..")
