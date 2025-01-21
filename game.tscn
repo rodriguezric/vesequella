@@ -21,10 +21,17 @@ south_node = NodePath("../Toiyun")
 east_node = NodePath("../BE2")
 game_node = NodePath("../..")
 
-[node name="BW1" type="Node" parent="World" node_paths=PackedStringArray("east_node", "game_node")]
+[node name="BW1" type="Node" parent="World" node_paths=PackedStringArray("east_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "A dirt road cuts through the endless grasslands, stretching east and west; to the west, the plains roll on undisturbed, while to the east, the air grows heavier with the faint hum of distant voices and the scent of woodsmoke, hinting at nearby life."
 east_node = NodePath("../Baton")
+west_node = NodePath("../BW2")
+game_node = NodePath("../..")
+
+[node name="BW2" type="Node" parent="World" node_paths=PackedStringArray("east_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "You find yourself at a crossroads amid rolling plains, where the west carries the hum of a bustling city, the north grows arid with dry winds, and the east stretches into quiet, endless grasslands."
+east_node = NodePath("../BW1")
 game_node = NodePath("../..")
 
 [node name="BE1" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
