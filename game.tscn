@@ -13,10 +13,11 @@ debug_scene = 1
 script = ExtResource("2_114ai")
 game_node = NodePath("../..")
 
-[node name="BS1" type="Node" parent="World" node_paths=PackedStringArray("north_node", "game_node")]
+[node name="BS1" type="Node" parent="World" node_paths=PackedStringArray("north_node", "east_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Vast plains ripple with golden grasses, the air growing lively to the north and cold with a biting edge toward the south."
 north_node = NodePath("../Baton")
+east_node = NodePath("../BE2")
 game_node = NodePath("../..")
 
 [node name="Baton" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
@@ -34,11 +35,19 @@ description = "A dirt road cuts through the endless grasslands, stretching east 
 east_node = NodePath("../Baton")
 game_node = NodePath("../..")
 
-[node name="BE1" type="Node" parent="World" node_paths=PackedStringArray("east_node", "west_node", "game_node")]
+[node name="BE1" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Endless plains stretch beneath a brilliant sky; to the east, a dark forest looms, while the west hums with the warmth of civilization."
+south_node = NodePath("../BE2")
 east_node = NodePath("../Senlin")
 west_node = NodePath("../Baton")
+game_node = NodePath("../..")
+
+[node name="BE2" type="Node" parent="World" node_paths=PackedStringArray("north_node", "west_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "Untamed plains sprawl endlessly, wild grasses and scattered thorns swaying in a restless wind, with a faint road cutting the horizon to the north."
+north_node = NodePath("../BE1")
+west_node = NodePath("../BS1")
 game_node = NodePath("../..")
 
 [node name="Senlin" type="Node" parent="World" node_paths=PackedStringArray("west_node", "game_node")]
