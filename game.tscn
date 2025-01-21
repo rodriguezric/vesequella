@@ -13,9 +13,16 @@ debug_scene = 1
 script = ExtResource("2_114ai")
 game_node = NodePath("../..")
 
-[node name="Baton" type="Node" parent="World" node_paths=PackedStringArray("east_node", "west_node", "game_node")]
+[node name="BS1" type="Node" parent="World" node_paths=PackedStringArray("north_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "Vast plains ripple with golden grasses, the air growing lively to the north and cold with a biting edge toward the south."
+north_node = NodePath("../Baton")
+game_node = NodePath("../..")
+
+[node name="Baton" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "You see a bustling town nestled at the crossroads of trade and magic, its spires of the academy gleaming against the horizon."
+south_node = NodePath("../BS1")
 east_node = NodePath("../BE1")
 west_node = NodePath("../BW1")
 game_node = NodePath("../..")
