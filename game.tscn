@@ -57,9 +57,10 @@ east_node = NodePath("../BW1")
 west_node = NodePath("../Polis")
 game_node = NodePath("../..")
 
-[node name="BW3" type="Node" parent="World" node_paths=PackedStringArray("south_node", "west_node", "game_node")]
+[node name="BW3" type="Node" parent="World" node_paths=PackedStringArray("north_node", "south_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "The cracked earth is dotted with dry grasses and thorny shrubs, fading to golden dunes in the north, lush marshy scents wafting faintly from the west, and softer plains stretching southward."
+north_node = NodePath("../BW5")
 south_node = NodePath("../BW2")
 west_node = NodePath("../BW4")
 game_node = NodePath("../..")
@@ -69,6 +70,13 @@ script = ExtResource("2_114ai")
 description = "Dark waters ripple beneath twisted trees, the air thick with decay and humid whispers, while dry winds beckon from the east and faint echoes of life drift up from the south."
 south_node = NodePath("../Polis")
 east_node = NodePath("../BW3")
+game_node = NodePath("../..")
+
+[node name="BW5" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "The wind howls across shifting sands, carrying faint, strange whispers from the east while the dunes soften and the air grows still to the south."
+south_node = NodePath("../BW3")
+east_node = NodePath("../Yerkink")
 game_node = NodePath("../..")
 
 [node name="BE1" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
@@ -110,10 +118,11 @@ north_node = NodePath("../BS1")
 game_node = NodePath("../..")
 enter_function = "toiyun_enter_room"
 
-[node name="Yerkink" type="Node" parent="World" node_paths=PackedStringArray("east_node", "game_node")]
+[node name="Yerkink" type="Node" parent="World" node_paths=PackedStringArray("east_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Shimmering under the desert sun, the quiet town of colorful tents sways like an illusion, its stillness broken only by the faint rustle of fabric in the wind."
 east_node = NodePath("../BN2")
+west_node = NodePath("../BW5")
 game_node = NodePath("../..")
 enter_function = "yerkink_enter_room"
 
