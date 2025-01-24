@@ -20,10 +20,17 @@ north_node = NodePath("../BN2")
 south_node = NodePath("../Baton")
 game_node = NodePath("../..")
 
-[node name="BN2" type="Node" parent="World" node_paths=PackedStringArray("south_node", "game_node")]
+[node name="BN2" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Endless sands stretch beneath the blazing sun, the air heavy with a faint, unplaceable energy that tingles at the edge of your awareness."
 south_node = NodePath("../BN1")
+east_node = NodePath("../BN3")
+game_node = NodePath("../..")
+
+[node name="BN3" type="Node" parent="World" node_paths=PackedStringArray("west_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "You stand amidst endless dunes, the scorching sun bearing down as the horizon blurs into a shimmering haze of golden emptiness."
+west_node = NodePath("../BN2")
 game_node = NodePath("../..")
 
 [node name="BS1" type="Node" parent="World" node_paths=PackedStringArray("north_node", "south_node", "east_node", "game_node")]
