@@ -20,11 +20,12 @@ north_node = NodePath("../BN2")
 south_node = NodePath("../Baton")
 game_node = NodePath("../..")
 
-[node name="BN2" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "game_node")]
+[node name="BN2" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "Endless sands stretch beneath the blazing sun, the air heavy with a faint, unplaceable energy that tingles at the edge of your awareness."
 south_node = NodePath("../BN1")
 east_node = NodePath("../BN3")
+west_node = NodePath("../Yerkink")
 game_node = NodePath("../..")
 
 [node name="BN3" type="Node" parent="World" node_paths=PackedStringArray("west_node", "game_node")]
@@ -93,6 +94,13 @@ description = "You stand at the entrance of an ice cave, its jagged frost gliste
 north_node = NodePath("../BS1")
 game_node = NodePath("../..")
 enter_function = "toiyun_enter_room"
+
+[node name="Yerkink" type="Node" parent="World" node_paths=PackedStringArray("east_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "Shimmering under the desert sun, the quiet town of colorful tents sways like an illusion, its stillness broken only by the faint rustle of fabric in the wind."
+east_node = NodePath("../BN2")
+game_node = NodePath("../..")
+enter_function = "yerkink_enter_room"
 
 [node name="Polis" type="Node" parent="World" node_paths=PackedStringArray("east_node", "game_node")]
 script = ExtResource("2_114ai")
