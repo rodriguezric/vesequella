@@ -57,10 +57,18 @@ east_node = NodePath("../BW1")
 west_node = NodePath("../Polis")
 game_node = NodePath("../..")
 
-[node name="BW3" type="Node" parent="World" node_paths=PackedStringArray("south_node", "game_node")]
+[node name="BW3" type="Node" parent="World" node_paths=PackedStringArray("south_node", "west_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "The cracked earth is dotted with dry grasses and thorny shrubs, fading to golden dunes in the north, lush marshy scents wafting faintly from the west, and softer plains stretching southward."
 south_node = NodePath("../BW2")
+west_node = NodePath("../BW4")
+game_node = NodePath("../..")
+
+[node name="BW4" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "game_node")]
+script = ExtResource("2_114ai")
+description = "Dark waters ripple beneath twisted trees, the air thick with decay and humid whispers, while dry winds beckon from the east and faint echoes of life drift up from the south."
+south_node = NodePath("../Polis")
+east_node = NodePath("../BW3")
 game_node = NodePath("../..")
 
 [node name="BE1" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "west_node", "game_node")]
@@ -109,9 +117,10 @@ east_node = NodePath("../BN2")
 game_node = NodePath("../..")
 enter_function = "yerkink_enter_room"
 
-[node name="Polis" type="Node" parent="World" node_paths=PackedStringArray("east_node", "game_node")]
+[node name="Polis" type="Node" parent="World" node_paths=PackedStringArray("north_node", "east_node", "game_node")]
 script = ExtResource("2_114ai")
 description = "You stand at the edge of a sprawling city, its shadowed silhouette alive with the flicker of lanterns and the distant hum of countless voices mingling in the streets."
+north_node = NodePath("../BW4")
 east_node = NodePath("../BW2")
 game_node = NodePath("../..")
 enter_function = "polis_enter_room"
