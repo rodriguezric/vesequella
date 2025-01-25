@@ -7,9 +7,11 @@ var rng = RandomNumberGenerator.new()
 
 signal complete_sig
 
-func run(enemy_name):
-    var enemy = CTX.create_enemy(enemy_name)
+func run(enemy_id: CTX.Enemy):
+    var enemy = CTX.create_enemy(enemy_id)
+    MUSIC.stop()
     await IO.scroll_text(enemy.description + " approaches.")
+    MUSIC.play_track(MUSIC.BOSS)
     IO._on_hero_stats_changed()
     IO.hero_stats_container.visible = true
 
@@ -63,8 +65,15 @@ func run(enemy_name):
             actors.reverse()
 
         if enemy.hp <= 0:
+            MUSIC.stop()
             await IO.append_text("You defeated the " + enemy.name)
-            await IO.append_text("Good job, I guess.")
             break
 
-    complete_sig.emit(res_dict)
+        if CTX.player.hp <= 0:
+            MUSIC.stop()
+            await IO.scroll_text("You have been defeated.")
+            get_tree().change_scene_to_file("res://title.tscn")
+
+
+    complete_sig.emit()
+    return res_dict

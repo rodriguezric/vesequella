@@ -75,16 +75,23 @@ var goblin = {
     ]
 }
 
-# map for getting a copy an instance of an enemy model
-var enemies = {
-    "rat": rat,
-    "slime": slime,
-    "squishy_slime": squishy_slime,
-    "goblin": goblin,
+enum Enemy {
+    RAT,
+    SLIME,
+    SQUISHY_SLIME,
+    GOBLIN,
 }
 
-func create_enemy(enemy_name):
-    return enemies[enemy_name].duplicate()
+# map for getting a copy an instance of an enemy model
+var enemy_map = {
+    Enemy.RAT: rat,
+    Enemy.SLIME: slime,
+    Enemy.SQUISHY_SLIME: squishy_slime,
+    Enemy.GOBLIN: goblin,
+}
+
+func create_enemy(enemy: Enemy):
+    return enemy_map[enemy].duplicate()
 
 func dice_roll(sides, modifier=0):
     # Roll 1d{sides} + modifier

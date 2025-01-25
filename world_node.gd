@@ -6,8 +6,8 @@ extends Node
 @export var south_node : Node
 @export var east_node : Node
 @export var west_node : Node
-@export var encounters : Array
-@export var encounter_rate : int
+@export var encounters : Array[CTX.Enemy]
+@export_range(0, 100, 1) var encounter_rate : int = 0
 
 @export var game_node : Node
 # Note, enter_functions will only be called from Game node
@@ -18,8 +18,9 @@ var move_idx
 var invn_idx
 
 func run():
-    if encounter_rate:
-        print(encounters)
+    if CTX.rng.randi_range(1, 100) <= encounter_rate:
+        var encounter = encounters.pick_random()
+        await BATTLE.run(encounter)
 
     while true:
         var menu_list = ["ENTER", "MOVE", "ITEM"]
