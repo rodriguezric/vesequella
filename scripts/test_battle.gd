@@ -1,6 +1,6 @@
 extends Node
 
-@export var enemy_name : String
+@export var enemy_id : CTX.Enemy
 var enemy
 
 func use_torch(source, target):
@@ -17,7 +17,7 @@ var torch = {
 func _ready() -> void:
     CTX.inventory = [torch.duplicate()]
 
-    if not enemy_name:
-        enemy_name = CTX.enemies.keys().pick_random()
+    if not enemy_id:
+        enemy_id = CTX.Enemy.values().pick_random()
 
-    BATTLE.run(enemy_name)
+    BATTLE.run(enemy_id)
