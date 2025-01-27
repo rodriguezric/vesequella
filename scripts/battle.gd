@@ -52,6 +52,7 @@ func run(enemy_id: CTX.Enemy):
         if player_first or player_skill == SKILL.defend:
             actors.reverse()
 
+        var enemy_defeated = false
         for x_ in 2:
             # actor in this case is a tuple: [entity, battle_function]
             # we will call the source's function
@@ -65,16 +66,19 @@ func run(enemy_id: CTX.Enemy):
 
             actors.reverse()
 
-        if enemy.hp <= 0:
-            MUSIC.stop()
-            await IO.append_text("You defeated the " + enemy.name)
+            if enemy.hp <= 0:
+                MUSIC.stop()
+                await IO.append_text("You defeated the " + enemy.name)
+                enemy_defeated = true
+                break
+
+            if CTX.player.hp <= 0:
+                MUSIC.stop()
+                await IO.scroll_text("You have been defeated.")
+                get_tree().change_scene_to_file("res://title.tscn")
+
+        if enemy_defeated:
             break
-
-        if CTX.player.hp <= 0:
-            MUSIC.stop()
-            await IO.scroll_text("You have been defeated.")
-            get_tree().change_scene_to_file("res://title.tscn")
-
 
     complete_sig.emit()
     return res_dict

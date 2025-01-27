@@ -27,12 +27,14 @@ func calc_dmg(source, target):
 func attack(source, target):
     await IO.scroll_text("%s attacks %s ..." % [source.name, target.name])
     if hit_check(source, target):
+        SFX.play_track(SFX.HIT)
         var dmg = calc_dmg(source, target)
         if target.defend:
             dmg /= 2
         await IO.append_text("and hits for %d damage!" % [dmg])
         target.hp -= dmg
     else:
+        SFX.play_track(SFX.MISS)
         await IO.append_text("but misses!")
 
     if target == CTX.player:
@@ -55,9 +57,31 @@ func escape(source, target):
 
     return false
 
+func rat_eat_cheese(source, _target):
+    SFX.play_track(SFX.PICKUP)
+    VFX.flash(Color.WHITE)
+    await IO.scroll_text("%s eats some cheese" % [source.name])
+    var heal = rng.randi_range(1,2)
+    source.hp += heal
+    await IO.append_text("%s recovers %d HP!" % [source.name, heal])
+
+func rat_nibble(source, target):
+    await IO.scroll_text("%s nibbles at your feet..." % [source.name])
+    if hit_check(source, target):
+        SFX.play_track(SFX.HIT)
+        var dmg = 1
+        target.hp -= dmg
+        await IO.append_text("and does %d damage!" % [dmg])
+    else:
+        SFX.play_track(SFX.MISS)
+        await IO.append_text("but does no damage.")
+    if target == CTX.player:
+        IO.hero_stats_changed.emit()
+
 func trip(source, _target):
     await IO.scroll_text("%s loses balance and trips!" % [source.name])
     var dmg = rng.randi_range(1,3)
+    source.hp -= dmg
     await IO.append_text("%s takes %d damage!" % [source.name, dmg])
 
 func pulses_eerily(source, _target):
