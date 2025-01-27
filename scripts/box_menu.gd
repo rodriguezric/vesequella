@@ -19,6 +19,8 @@ func append(_text: String):
 
     if idx == 0:
         button.grab_focus()
+
+    button.focus_entered.connect(_button_focus_entered)
     idx += 1
 
 func clear():
@@ -28,5 +30,9 @@ func clear():
     idx = 0
 
 func _button_pressed(_idx: int):
+    SFX.play_track(SFX.UISELECT)
     option_selected.emit(_idx)
     visible = false
+
+func _button_focus_entered():
+    SFX.play_track(SFX.UIMOVE)

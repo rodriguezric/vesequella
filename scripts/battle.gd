@@ -10,6 +10,7 @@ signal complete_sig
 func run(enemy_id: CTX.Enemy):
     var enemy = CTX.create_enemy(enemy_id)
     MUSIC.stop()
+    SFX.play_track(SFX.BATTLE_STARTED)
     await IO.scroll_text(enemy.description + " approaches.")
     MUSIC.play_track(MUSIC.BOSS)
     IO._on_hero_stats_changed()
