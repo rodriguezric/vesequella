@@ -27,6 +27,8 @@ var rat = {
     "agi": 5,
     "skills": [
         SKILL.attack,
+        SKILL.rat_eat_cheese,
+        SKILL.rat_nibble,
     ]
 }
 
