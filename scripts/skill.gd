@@ -84,8 +84,19 @@ func trip(source, _target):
     source.hp -= dmg
     await IO.append_text("%s takes %d damage!" % [source.name, dmg])
 
-func pulses_eerily(source, _target):
-    await IO.scroll_text("%s pulses eerily..." % [source.name])
+func pulses_eerily(source, target):
+    if not source.pulse:
+        await IO.scroll_text("%s pulses eerily..." % [source.name])
+        source.pulse = true
+    else:
+        await IO.scroll_text("%s errupts in a slimey explosion!" % [source.name])
+        source.hp -= 5
+        await IO.append_text("%s takes 5 damage" % [source.name])
+        target.hp -= 5
+        await IO.append_text("%s takes 5 damage" % [target.name])
+
+        if target == CTX.player:
+            IO.hero_stats_changed.emit()
 
 func inventory(source, _target):
     var idx = await IO.show_inventory()
