@@ -87,9 +87,9 @@ var lost_sorcerer = {
     "dex": 3,
     "agi": 3,
     "skills": [
-        #SKILL.attack,
+        SKILL.attack,
         SKILL.bolt,
-        #SKILL.fizzle,
+        SKILL.fizzle,
     ]
 }
 
