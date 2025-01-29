@@ -15,5 +15,6 @@ var torch = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+    CTX.player.name = "Player"
     CTX.inventory = [torch.duplicate()]
     BATTLE.run(enemy_id)
