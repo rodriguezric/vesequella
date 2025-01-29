@@ -98,6 +98,30 @@ func pulses_eerily(source, target):
         if target == CTX.player:
             IO.hero_stats_changed.emit()
 
+func bolt(source, target):
+    await IO.scroll_text("%s tries to cast a spell..." % [source.name])
+
+    if source.sp >= 2:
+        VFX.flash(Color.YELLOW)
+        SFX.play_track(SFX.PICKUP)
+        await IO.append_text("and casts the Bolt spell")
+        source.sp -= 2
+        var dmg = 2 + rng.randi_range(0, 3)
+        target.hp -= dmg
+        SFX.play_track(SFX.HIT)
+        await IO.append_text("%s takes %d damage" % [target.name, dmg])
+    else:
+        SFX.play_track(SFX.MISS)
+        await IO.append_text("but doesn't have enough energy")
+
+    if target == CTX.player:
+        IO.hero_stats_changed.emit()
+
+func fizzle(source, _target):
+    await IO.scroll_text("%s tries to cast a spell..." % [source.name])
+    SFX.play_track(SFX.MISS)
+    await IO.append_text("but fails to remember how.")
+
 func inventory(source, _target):
     var idx = await IO.show_inventory()
     await IO.scroll_text("%s used %s" % [source.name, CTX.inventory[idx]])
