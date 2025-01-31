@@ -14,6 +14,11 @@ var switches = {
     "baton_professor_quest_received": false,
     "baton_professor_quest_completed": false,
     "baton_professor_quest_rewarded": false,
+    "baton_lumarios_introduction": false,
+}
+
+var names = {
+    "LUMARIOS": "Lumarios",
 }
 
 var potion = {
@@ -216,14 +221,19 @@ func baton_tavern_room():
 
         if menu_idx == 0:
             var people = ["OLD MAN", "BOY", "CANCEL"]
+
+            if switches.baton_lumarios_introduction:
+                people[1] = names.LUMARIOS
+
             talk_idx = await IO.menu(people, "Who do you want to talk to?")
 
             if talk_idx == 0:
                 # this guy can make slime boots
                 await IO.scroll_text("The old man greets you with a smile raising his mug.")
             elif talk_idx == 1:
-                # this is a quest for the slime collector
-                await IO.scroll_text("The boy text")
+                if not switches.baton_lumarios_introduction:
+                    await IO.scroll_text("A young boy with a satchel full of jars approaches you, his eyes sparkling with excitement. Each jar clinks softly as he moves, containing slimes of various colors and sizes.")
+                    await IO.scroll_text("'Hi there! My name’s Limarius, and I’m a slime collector!")
         if menu_idx == 1:
             await IO.scroll_text("You leave the tavern.")
             baton_town_room()
