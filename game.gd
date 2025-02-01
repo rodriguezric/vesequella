@@ -14,7 +14,24 @@ var switches = {
     "baton_professor_quest_received": false,
     "baton_professor_quest_completed": false,
     "baton_professor_quest_rewarded": false,
+    "baton_lumarius_introduction": false,
 }
+
+var names = {
+    "LUMARIUS": "Lumarius",
+}
+var limarius_one_liners = [
+    "'Did you know some slimes can change color based on their mood? This one’s always blue—must be a chill little guy!'",
+    "'I once saw a slime eat an entire apple. It took a week, but it was the happiest slime I’ve ever met!'",
+    "'You should see my jar collection! Each one is specially designed to keep slimes comfy and safe. They deserve the best, you know!'",
+    "'I think slimes are like people—each one’s unique. Some are shy, some are bold, and some are just plain weird!'",
+    "'If you listen closely, you can hear slimes giggle. It’s the cutest sound in the world!'",
+    "'This slime here? It’s a rare Shimmerglow. It sparkles like starlight when it’s happy!'",
+    "'I’ve been trying to teach this slime to juggle. So far, it’s just really good at sticking to things.'",
+    "'Slimes are great listeners. They never interrupt, and they always nod—well, wobble—along!'",
+    "'I once met a slime that could mimic voices. It kept saying ‘blorp’ in my voice for days!'",
+    "'You haven’t lived until you’ve seen a slime dance. It’s like watching jelly in an earthquake!'"
+]
 
 var potion = {
     "id": "potion",
@@ -216,14 +233,30 @@ func baton_tavern_room():
 
         if menu_idx == 0:
             var people = ["OLD MAN", "BOY", "CANCEL"]
+
+            if switches.baton_lumarius_introduction:
+                people[1] = names.LUMARIUS
+
             talk_idx = await IO.menu(people, "Who do you want to talk to?")
 
             if talk_idx == 0:
                 # this guy can make slime boots
                 await IO.scroll_text("The old man greets you with a smile raising his mug.")
             elif talk_idx == 1:
-                # this is a quest for the slime collector
-                await IO.scroll_text("The boy text")
+                if not switches.baton_lumarius_introduction:
+                    switches.baton_lumarius_introduction = true
+                    await IO.scroll_text("A young boy with a satchel full of jars approaches you, his eyes sparkling with excitement. Each jar clinks softly as he moves, containing slimes of various colors and sizes.")
+                    await IO.scroll_text("'Hi there! My name’s Limarius, and I’m a slime collector!'")
+                    await IO.append_text("'Do you like slimes too?'", false)
+                    var like_slimes_idx = await IO.menu(["YES", "NO"])
+                    if like_slimes_idx == 0:
+                        await IO.append_text("'Great to hear! If you find any interesting slimes please bring them my way'")
+                    else:
+                        await IO.append_text("'I get it, not everyone can appreciate the intricacies of slimeology.'")
+                else:
+                    await IO.scroll_text("%s shuffles through his jars of slimes. He looks up" % [names.LUMARIUS])
+                    var slime_talk = limarius_one_liners.pick_random()
+                    await IO.scroll_text(slime_talk)
         if menu_idx == 1:
             await IO.scroll_text("You leave the tavern.")
             baton_town_room()
