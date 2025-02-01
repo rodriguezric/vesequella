@@ -18,7 +18,7 @@ var switches = {
 }
 
 var names = {
-    "LUMARIUS": "Lumarius",
+    "LUMARIUS": "LUMARIUS",
 }
 var limarius_one_liners = [
     "'Did you know some slimes can change color based on their mood? This one’s always blue—must be a chill little guy!'",
