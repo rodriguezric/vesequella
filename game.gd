@@ -250,13 +250,22 @@ func baton_tavern_room():
                     await IO.append_text("'Do you like slimes too?'", false)
                     var like_slimes_idx = await IO.menu(["YES", "NO"])
                     if like_slimes_idx == 0:
-                        await IO.append_text("'Great to hear! If you find any interesting slimes please bring them my way'")
+                        await IO.append_text("'Great to hear! If you find any interesting slimes please bring them my way'", false)
                     else:
-                        await IO.append_text("'I get it, not everyone can appreciate the intricacies of slimeology.'")
+                        await IO.append_text("'I get it, not everyone can appreciate the intricacies of slimeology.'", false)
                 else:
-                    await IO.scroll_text("%s shuffles through his jars of slimes. He looks up" % [names.LUMARIUS])
-                    var slime_talk = limarius_one_liners.pick_random()
-                    await IO.scroll_text(slime_talk)
+                    await IO.scroll_text("%s shuffles through his jars of slimes. He looks up" % [names.LUMARIUS], false)
+
+                while true:
+                    menu_idx = await IO.menu(["TALK", "ITEM", "CANCEL"])
+                    if menu_idx == 0:
+                        var slime_talk = limarius_one_liners.pick_random()
+                        await IO.scroll_text(slime_talk, false)
+                    elif menu_idx == 1:
+                        invn_idx = await IO.show_inventory()
+                        await IO.scroll_text("Some debug invn text", false)
+                    elif menu_idx == 2:
+                        break
         if menu_idx == 1:
             await IO.scroll_text("You leave the tavern.")
             baton_town_room()
