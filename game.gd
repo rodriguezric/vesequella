@@ -15,10 +15,12 @@ var switches = {
     "baton_professor_quest_completed": false,
     "baton_professor_quest_rewarded": false,
     "baton_lumarius_introduction": false,
+    "baton_caligarius_introduction": false,
 }
 
 var names = {
-    "LUMARIUS": "Lumarius",
+    "LUMARIUS": "LUMARIUS",
+    "CALIGARIUS": "CALIGARIUS",
 }
 var limarius_one_liners = [
     "'Did you know some slimes can change color based on their mood? This one’s always blue—must be a chill little guy!'",
@@ -31,6 +33,19 @@ var limarius_one_liners = [
     "'Slimes are great listeners. They never interrupt, and they always nod—well, wobble—along!'",
     "'I once met a slime that could mimic voices. It kept saying ‘blorp’ in my voice for days!'",
     "'You haven’t lived until you’ve seen a slime dance. It’s like watching jelly in an earthquake!'"
+]
+
+var caligarius_one_liners = [
+    "'Back in my youth, I traveled the world. These hands have seen more than just leather and thread!'",
+    "'A good pair of boots can take you anywhere—trust me, I’ve walked a thousand miles in my own creations.'",
+    "'The tavern’s my favorite place. A warm fire, a cold drink, and stories from travelers—what more could an old man need?'",
+    "'I once made boots for a king. He said they were the most comfortable he’d ever worn. A proud moment, that was.'",
+    "'Leather and ale have one thing in common—they both get better with age.'",
+    "'I’ve seen adventurers come and go, but the ones with good boots always come back.'",
+    "'The secret to a perfect boot? Patience, skill, and a little bit of magic—or so I like to say.'",
+    "'I don’t just make boots; I make companions for the road. Every pair has a story waiting to be walked.'",
+    "'The tavern’s where I hear the best tales. Some true, some not, but all worth a listen.'",
+    "'If you ever need boots that can outlast a dragon’s breath, you know where to find me.'"
 ]
 
 var potion = {
@@ -234,14 +249,34 @@ func baton_tavern_room():
         if menu_idx == 0:
             var people = ["OLD MAN", "BOY", "CANCEL"]
 
+            if switches.baton_caligarius_introduction:
+                people[0] = names.CALIGARIUS
             if switches.baton_lumarius_introduction:
                 people[1] = names.LUMARIUS
 
             talk_idx = await IO.menu(people, "Who do you want to talk to?")
 
+            # Caligarius
             if talk_idx == 0:
-                # this guy can make slime boots
-                await IO.scroll_text("The old man greets you with a smile raising his mug.")
+                if not switches.baton_caligarius_introduction:
+                    switches.baton_caligarius_introduction = true
+                    await IO.scroll_text("An elderly man with weathered hands and a kind smile greets you. His workshop is filled with leather, tools, and rows of finely crafted boots.")
+                    await IO.scroll_text("'Welcome, traveler. I am Caligarius, a humble boot-maker. How may I assist you today?'", false)
+                else:
+                    await IO.scroll_text("Caligarius greets you with a warm smile", false)
+
+                while true:
+                    menu_idx = await IO.menu(["TALK", "ITEM", "CANCEL"])
+                    if menu_idx == 0:
+                        var boot_talk = caligarius_one_liners.pick_random()
+                        await IO.scroll_text(boot_talk, false)
+                    elif menu_idx == 1:
+                        invn_idx = await IO.show_inventory()
+                        await IO.scroll_text("Some debug invn text", false)
+                    elif menu_idx == 2:
+                        break
+
+            # Lumarius
             elif talk_idx == 1:
                 if not switches.baton_lumarius_introduction:
                     switches.baton_lumarius_introduction = true
