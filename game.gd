@@ -16,6 +16,7 @@ var switches = {
     "baton_professor_quest_rewarded": false,
     "baton_lumarius_introduction": false,
     "baton_caligarius_introduction": false,
+    "baton_letter_opened": false,
 }
 
 var names = {
@@ -64,6 +65,37 @@ var boots = {
     "id": "boots",
     "name": "Boots",
     "description": "A warm pair of boots",
+}
+
+func use_professor_letter():
+    await IO.scroll_text("This is the letter from the professor of Baton to Vimarkos, mayor of Polis.")
+    await IO.append_text("Do you want to read it?", false)
+    var choice_idx = await IO.menu(["YES", "NO"])
+    if choice_idx == 0:
+        if not switches.baton_letter_opened:
+            await IO.scroll_text("You open the envelope")
+            switches.baton_letter_opened = true
+        await proc_text_list([
+            "To the Esteemed Mayor of Polis,",
+            "I hope this letter finds you in good health and high spirits. I write to you with a matter of great concern regarding one of my most gifted students, Vesequella.",
+            "Vesequella, a prodigy in the arcane arts, recently traveled to your city to conduct research on the ancient ley lines rumored to converge beneath Polis. She was due to return to the academy over a fortnight ago, yet I have received no word from her since her departure.",
+            "Given her exceptional talent and unwavering dedication, it is highly unlike her to vanish without notice. I fear that some misfortune may have befallen her during her stay in your city. I implore you, as a guardian of Polis, to investigate her whereabouts and ensure her safety.",
+            "Should you require any assistance or information, please do not hesitate to contact me. Vesequella is not only a brilliant scholar but also a dear member of our academy. Her absence weighs heavily on us all.",
+            "I trust in your wisdom and diligence, and I remain hopeful for her swift and safe return.",
+            "Yours in earnest concern,",
+            "Magister Arcanor",
+            "Professor of Arcane Studies",
+            "The Athenaeum Arcanum"
+        ])
+    elif choice_idx == 1:
+        if not switches.baton_letter_opened:
+            await IO.scroll_text("You decide to keep the envelope sealed.")
+
+var professor_letter = {
+    "id": "professor_letter",
+    "name": "Professor's Letter",
+    "description": "A letter from the professor to Vimarkos, mayor of Polis",
+    "use_function": use_professor_letter,
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -152,19 +184,26 @@ func baton_professor_room():
 
     while true:
         var text =  "The professor is sitting at his desk, examining tomes and writing notes."
-        menu_idx = await IO.menu(["TALK", "ITEM", "MOVE"], text)
+        menu_idx = await IO.menu(["TALK", "ITEM", "LEAVE"], text)
 
         if menu_idx == 0:
             if not switches.baton_professor_quest_received:
+                switches.baton_professor_quest_received = true
                 await proc_text_list([
                     "\"Hello %s, I'm glad you stopped by." % [CTX.player.name],
                     "I have a request, please take this letter to Vimarkos in Polis.",
                     "You can reach Polis by traveling west when you leave the town.\"",
                 ])
                 await IO.scroll_text("The professor hands you a letter.")
+                CTX.inventory.append(professor_letter.duplicate())
             elif not switches.baton_professor_quest_completed:
-                await IO.scroll_text("The professor raises his eyes from the tomes.")
-                await IO.scroll_text("\"Please, deliver the letter and let me know what Vimarkos has to say.")
+                if switches.baton_letter_opened and professor_letter in CTX.inventory:
+                    await IO.scroll_text("'I see, you decided to read the letter. I suppose it was inevitible for you to discover. Please, still deliver the letter to Vimarkos.'")
+                    await IO.scroll_text("'although...'")
+                    await IO.append_text("'I don't believe he will be pleased that you opened his letter.'")
+                else:
+                    await IO.scroll_text("The professor raises his eyes from the tomes.")
+                    await IO.scroll_text("\"Please, deliver the letter and let me know what Vimarkos has to say.")
             elif not switches.baton_professor_quest_rewarded:
                 pass
             else:
@@ -173,12 +212,15 @@ func baton_professor_room():
             print("ITEM")
             invn_idx = await IO.show_inventory()
             if invn_idx >= 0:
-                await IO.scroll_text(CTX.inventory[invn_idx])
+                var item = CTX.inventory[invn_idx]
+                if item.use_function:
+                    await item.use_function.call()
+                else:
+                    await IO.scroll_text(item.description)
         elif menu_idx == 2:
-            move_idx = await IO.menu(["TO TOWN", "CANCEL"], "Where do you want to go?")
-            if move_idx == 0:
-                baton_town_room()
-                return
+            await IO.scroll_text("You leave the academy.")
+            baton_town_room()
+            return
 
 func baton_town_room():
     var menu_idx
