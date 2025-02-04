@@ -75,18 +75,21 @@ func use_professor_letter():
         if not switches.baton_letter_opened:
             await IO.scroll_text("You open the envelope")
             switches.baton_letter_opened = true
-        await proc_text_list([
+
+        var letter_text_list = [
             "To the Esteemed Mayor of Polis,",
-            "I hope this letter finds you in good health and high spirits. I write to you with a matter of great concern regarding one of my most gifted students, Vesequella.",
-            "Vesequella, a prodigy in the arcane arts, recently traveled to your city to conduct research on the ancient ley lines rumored to converge beneath Polis. She was due to return to the academy over a fortnight ago, yet I have received no word from her since her departure.",
-            "Given her exceptional talent and unwavering dedication, it is highly unlike her to vanish without notice. I fear that some misfortune may have befallen her during her stay in your city. I implore you, as a guardian of Polis, to investigate her whereabouts and ensure her safety.",
-            "Should you require any assistance or information, please do not hesitate to contact me. Vesequella is not only a brilliant scholar but also a dear member of our academy. Her absence weighs heavily on us all.",
-            "I trust in your wisdom and diligence, and I remain hopeful for her swift and safe return.",
-            "Yours in earnest concern,",
+            "I hope this letter finds you well. I write to you with growing concern regarding one of my most promising students, Vesequella.",
+            "Vesequella recently traveled to your city on an important mission, the details of which I am not at liberty to disclose. She was expected to return to Baton over a fortnight ago, yet I have received no word from her since her arrival in Polis.",
+            "Given her dedication and sense of responsibility, it is highly unusual for her to remain out of contact for so long. I fear that something may have hindered her progress or, worse, put her in danger.",
+            "I implore you, as a steward of Polis, to look into her whereabouts and ensure her safety. Any assistance you can provide would be invaluable, not only to me but to the academy as a whole.",
+            "Should you require further information or wish to discuss this matter, please do not hesitate to send word. Vesequella’s well-being is of the utmost importance to us.",
+            "Thank you for your attention to this urgent matter. I trust in your wisdom and hope for her swift and safe return.",
+            "Yours sincerely,",
             "Magister Arcanor",
             "Professor of Arcane Studies",
             "The Athenaeum Arcanum"
-        ])
+        ]
+        await proc_text_list(letter_text_list)
     elif choice_idx == 1:
         if not switches.baton_letter_opened:
             await IO.scroll_text("You decide to keep the envelope sealed.")
