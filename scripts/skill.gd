@@ -28,6 +28,13 @@ func attack(source, target):
     await IO.scroll_text("%s attacks %s ..." % [source.name, target.name])
     if hit_check(source, target):
         SFX.play_track(SFX.HIT)
+
+        if target == CTX.player:
+            IO.hero_stats_changed.emit()
+            VFX.shake_hero_stats()
+        else:
+            VFX.shake_window_message()
+
         var dmg = calc_dmg(source, target)
         if target.defend:
             dmg /= 2
@@ -36,9 +43,6 @@ func attack(source, target):
     else:
         SFX.play_track(SFX.MISS)
         await IO.append_text("but misses!")
-
-    if target == CTX.player:
-        IO.hero_stats_changed.emit()
 
 func defend(source, _target):
     await IO.scroll_text(source.name + " embraces for an attack...")
@@ -69,14 +73,16 @@ func rat_nibble(source, target):
     await IO.scroll_text("%s nibbles at your feet..." % [source.name])
     if hit_check(source, target):
         SFX.play_track(SFX.HIT)
+        if target == CTX.player:
+            IO.hero_stats_changed.emit()
+            VFX.shake_hero_stats()
         var dmg = 1
         target.hp -= dmg
         await IO.append_text("and does %d damage!" % [dmg])
     else:
         SFX.play_track(SFX.MISS)
         await IO.append_text("but does no damage.")
-    if target == CTX.player:
-        IO.hero_stats_changed.emit()
+
 
 func trip(source, _target):
     await IO.scroll_text("%s loses balance and trips!" % [source.name])
@@ -97,6 +103,7 @@ func pulses_eerily(source, target):
 
         if target == CTX.player:
             IO.hero_stats_changed.emit()
+            VFX.shake_hero_stats()
 
 func bolt(source, target):
     await IO.scroll_text("%s tries to cast a spell..." % [source.name])
@@ -109,13 +116,18 @@ func bolt(source, target):
         var dmg = 2 + rng.randi_range(0, 3)
         target.hp -= dmg
         SFX.play_track(SFX.HIT)
+        if target == CTX.player:
+            IO.hero_stats_changed.emit()
+            VFX.shake_hero_stats()
+        else:
+            VFX.shake_window_message()
+
         await IO.append_text("%s takes %d damage" % [target.name, dmg])
     else:
         SFX.play_track(SFX.MISS)
         await IO.append_text("but doesn't have enough energy")
 
-    if target == CTX.player:
-        IO.hero_stats_changed.emit()
+
 
 func fizzle(source, _target):
     await IO.scroll_text("%s tries to cast a spell..." % [source.name])

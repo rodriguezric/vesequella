@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://btkn8cndv3tno"]
+[gd_scene load_steps=10 format=3 uid="uid://btkn8cndv3tno"]
 
 [ext_resource type="Script" path="res://scripts/io.gd" id="1_chw1k"]
 [ext_resource type="Theme" uid="uid://8c4dt20nruvo" path="res://io.tres" id="2_cd5wq"]
@@ -37,9 +37,13 @@ tracks/0/keys = {
 "values": [Vector2(0, 0), Vector2(-5, 0), Vector2(0, 0), Vector2(5, 0), Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_tahxv"]
+resource_name = "shake_hero_stats"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_edcvl"]
 _data = {
 "RESET": SubResource("Animation_qe3eq"),
+"shake_hero_stats": SubResource("Animation_tahxv"),
 "shake_window": SubResource("Animation_gxmft")
 }
 
