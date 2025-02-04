@@ -29,6 +29,22 @@ func flash(color: Color):
     color_rect.color = color
     animation_player.play("flash")
 
+func flash_window(color: Color):
+    var orig_color = IO.window_color_rect.color
+    var tween = get_tree().create_tween()
+    tween.tween_property(
+        IO.window_color_rect,
+        "color",
+        color,
+        0.05,
+    )
+    tween.chain().tween_property(
+        IO.window_color_rect,
+        "color",
+        orig_color,
+        0.05,
+    )
+
 func shake_obj(obj, dist, duration):
     var tween = create_tween()
     tween.tween_property(

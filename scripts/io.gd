@@ -7,6 +7,7 @@ extends Control
 @onready var grid_menu: GridContainer = $MarginContainer/MarginContainer/GridMenu
 @onready var grid_menu_panel: Panel = $MarginContainer/GridMenuPanel
 @onready var window_message: MarginContainer = $WindowMessage
+@onready var window_color_rect: ColorRect = $WindowMessage/WindowColorRect
 @onready var line_edit_submit: Button = $LineEditContainer/LineEditSubmit
 @onready var line_edit: LineEdit = $LineEditContainer/LineEdit
 @onready var line_edit_container: HBoxContainer = $LineEditContainer
