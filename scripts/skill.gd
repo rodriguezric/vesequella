@@ -30,7 +30,6 @@ func attack(source, target):
         SFX.play_track(SFX.HIT)
 
         if target == CTX.player:
-            IO.hero_stats_changed.emit()
             VFX.shake_hero_stats()
         else:
             VFX.shake_window_message()
@@ -43,6 +42,10 @@ func attack(source, target):
     else:
         SFX.play_track(SFX.MISS)
         await IO.append_text("but misses!")
+
+    if target == CTX.player:
+        IO.hero_stats_changed.emit()
+
 
 func defend(source, _target):
     await IO.scroll_text(source.name + " embraces for an attack...")
@@ -82,7 +85,8 @@ func rat_nibble(source, target):
     else:
         SFX.play_track(SFX.MISS)
         await IO.append_text("but does no damage.")
-
+    if target == CTX.player:
+        IO.hero_stats_changed.emit()
 
 func trip(source, _target):
     await IO.scroll_text("%s loses balance and trips!" % [source.name])
@@ -109,7 +113,7 @@ func bolt(source, target):
     await IO.scroll_text("%s tries to cast a spell..." % [source.name])
 
     if source.sp >= 2:
-        VFX.flash(Color.YELLOW)
+        VFX.flash_window(Color.YELLOW)
         SFX.play_track(SFX.PICKUP)
         await IO.append_text("and casts the Bolt spell")
         source.sp -= 2

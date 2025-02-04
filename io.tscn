@@ -21,6 +21,9 @@ tracks/0/keys = {
 "values": [Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_tahxv"]
+resource_name = "shake_hero_stats"
+
 [sub_resource type="Animation" id="Animation_gxmft"]
 resource_name = "shake_window"
 length = 0.2667
@@ -36,9 +39,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(0, 0), Vector2(-5, 0), Vector2(0, 0), Vector2(5, 0), Vector2(0, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_tahxv"]
-resource_name = "shake_hero_stats"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_edcvl"]
 _data = {
@@ -65,10 +65,9 @@ anchor_right = 1.0
 offset_bottom = 191.0
 grow_horizontal = 2
 
-[node name="Panel" type="Panel" parent="WindowMessage"]
+[node name="WindowColorRect" type="ColorRect" parent="WindowMessage"]
 layout_mode = 2
-mouse_filter = 1
-theme = ExtResource("2_cd5wq")
+color = Color(0, 0, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="WindowMessage"]
 custom_minimum_size = Vector2(256, 64)
