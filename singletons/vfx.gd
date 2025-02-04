@@ -28,3 +28,39 @@ func flash(color: Color):
     color_rect.visible = true
     color_rect.color = color
     animation_player.play("flash")
+
+func shake_obj(obj, dist, duration):
+    var tween = create_tween()
+    tween.tween_property(
+        obj,
+        "position",
+        obj.position - Vector2(dist, 0),
+        duration,
+    )
+
+    tween.chain().tween_property(
+        obj,
+        "position",
+        obj.position,
+        duration,
+    )
+
+    tween.chain().tween_property(
+        obj,
+        "position",
+        obj.position + Vector2(dist, 0),
+        duration,
+    )
+
+    tween.chain().tween_property(
+        obj,
+        "position",
+        obj.position,
+        duration,
+    )
+
+func shake_hero_stats() -> void:
+    shake_obj(IO.hero_stats_container, 5, 0.05)
+
+func shake_window_message() -> void:
+    shake_obj(IO.window_message, 5, 0.05)
