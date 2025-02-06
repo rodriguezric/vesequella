@@ -9,7 +9,9 @@ var debug_scene_map = {
 var rng = RandomNumberGenerator.new()
 
 @onready var baton_world_node: WorldNode = $World/Baton
+@onready var polis_world_node: WorldNode = $World/Polis
 
+func SWITCHES_DEFN(): pass
 var switches = {
     "baton_professor_quest_received": false,
     "baton_professor_quest_completed": false,
@@ -49,6 +51,7 @@ var caligarius_one_liners = [
     "'If you ever need boots that can outlast a dragon’s breath, you know where to find me.'"
 ]
 
+func ITEMS_DEFN(): pass
 var potion = {
     "id": "potion",
     "name": "Potion",
@@ -177,7 +180,8 @@ func intro_scene() -> void:
     ]
     await proc_text_list(intro_scene_8)
 
-# Baton rooms
+
+func BATON_ROOMS(): pass
 func baton_professor_room():
     var menu_idx
     var invn_idx
@@ -395,4 +399,29 @@ func baton_library_room():
         elif menu_idx == 3:
             await IO.scroll_text("You leave the library.")
             baton_town_room()
+            return
+
+func POLIS_ROOMS(): pass
+func polis_city_room():
+    var menu_idx
+
+    while true:
+        var text = "Polis greets you with bustling streets and glinting spires, a city of boundless ambition where the air hums with opportunity—and the faint whisper of something darker lurking beneath."
+        menu_idx = await IO.menu(["CITY HALL", "STORE", "TAVERN", "LEAVE"], text)
+
+        if menu_idx == 0:
+            await IO.scroll_text("You enter the city hall")
+            baton_professor_room()
+            return
+        elif menu_idx == 1:
+            await IO.scroll_text("You enter the store")
+            baton_store_room()
+            return
+        elif menu_idx == 2:
+            await IO.scroll_text("You enter the tavern")
+            baton_tavern_room()
+            return
+        elif menu_idx == 3:
+            await IO.scroll_text("You leave the city")
+            polis_world_node.run()
             return
