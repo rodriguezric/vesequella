@@ -27,6 +27,8 @@ var switches = {
 var names = {
     "LUMARIUS": "LUMARIUS",
     "CALIGARIUS": "CALIGARIUS",
+    "PELLA": "PELLA",
+    "HIMAR": "HIMAR",
 }
 var limarius_one_liners = [
     "'Did you know some slimes can change color based on their mood? This one’s always blue—must be a chill little guy!'",
@@ -91,6 +93,19 @@ var vimarkos_trust_one_liners = [
     "'You’ve done well. I’ll remember your service.'",
     "'Your actions have earned my gratitude. Thank you.'",
     "'Polis is safer in the hands of those who value integrity.'"
+]
+
+var pella_one_liners = [
+    "'Have you heard the rumors about Yerkink? They say some people there have learned to fly! Can you imagine?'",
+    "'Stathis, that bard? He packed up and headed east last I heard. Something about chasing a new muse.'",
+    "'There’s a tree in the Senlin Forest—alive, I mean, really alive. It moves, they say, and whispers secrets to those who listen.'",
+    "'If you ever go to the ice cave in Toiyun, keep an eye out. Folks say there’s a faint purple glow deep inside. No one knows what causes it.'",
+    "'The mayor’s been acting strange lately. I wonder if it has something to do with those missing travelers.'",
+    "'I can’t stand turnips. They’re the worst thing anyone ever decided to cook, if you ask me.'",
+    "'There’s nothing better than a warm honey cake on a cold day. I’d trade a secret or two for one right now.'",
+    "'I love listening to bards, but only the good ones. If they can’t play a decent tune, they shouldn’t bother.'",
+    "'Dancing is my favorite way to pass the time. You should’ve seen me at the last festival—I outdanced everyone!'",
+    "'I hate the rain. It ruins my hair and makes the tavern smell like wet dog.'"
 ]
 
 func ITEMS_DEFN(): pass
@@ -522,15 +537,23 @@ func polis_city_hall_room():
 
 func polis_store_room():
     var menu_idx
+    var invn_idx
+    var shop_idx
 
     while true:
         var text = "The shop is a cozy haven of warmth, its walls lined with thick fur cloaks, sturdy boots, and woolen garments, all crafted to brave the harshest winters."
         menu_idx = await IO.menu(["BUY", "SELL", "LEAVE"], text)
 
         if menu_idx == 0:
-            pass
+            var shop_items = ["TORCH", "SNOW JACKET", "HAMMER"]
+            await IO.scroll_text("\"Take a look and see what you like.\"")
+            shop_idx = await IO.show_grid_menu(shop_items)
+
+            await IO.scroll_text("You chose %s, that costs %d, do you want to buy it?" % [shop_items[shop_idx], shop_idx])
         if menu_idx == 1:
-            pass
+            invn_idx = await IO.show_inventory()
+            if invn_idx >= 0:
+                await IO.scroll_text(CTX.inventory[invn_idx])
         elif menu_idx == 2:
             await IO.scroll_text("You leave the shop.")
             polis_city_room()
@@ -538,4 +561,39 @@ func polis_store_room():
 
 
 func polis_tavern_room():
-    pass
+    var menu_idx
+    var invn_idx
+    var talk_idx
+    var text
+
+    while true:
+        text = "The tavern is a dimly lit den of murmured conversations and clinking glasses, where weary travelers and shadowed figures alike seek refuge from the city’s relentless pace."
+        menu_idx = await IO.menu(["TALK", "LEAVE"], text)
+
+        if menu_idx == 0:
+            var people = ["MYSTIC", "WOMAN", "CANCEL"]
+
+            if switches.polis_himar_introduction:
+                people[0] = names.HIMAR
+            if switches.polis_pella_introduction:
+                people[1] = names.PELLA
+
+            talk_idx = await IO.menu(people, "Who do you want to talk to?")
+            var person = people[talk_idx]
+
+            if person in ["MYSTIC", "HIMAR"]:
+                pass
+            elif person in ["WOMAN", "PELLA"]:
+                if not switches.polis_pella_introduction:
+                    switches.polis_pella_introduction = true
+                    await IO.scroll_text("Sitting at a corner table with a half-empty mug of ale is a woman with a mischievous glint in her eye. Her auburn hair is tied back loosely, and her sleeves are rolled up as if she’s been here for hours.")
+                    await IO.scroll_text("She notices you looking her way and waves you over with a grin. 'Come, sit! I’m Pella, and if you’re looking for good company—or a good story—you’ve come to the right place.'")
+                else:
+                    text = pella_one_liners.pick_random()
+                    await IO.scroll_text(text)
+            elif person == "CANCEL":
+                break
+        elif menu_idx == 1:
+            await IO.scroll_text("You leave the tavern.")
+            polis_city_room()
+            return
