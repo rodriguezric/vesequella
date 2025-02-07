@@ -1,9 +1,10 @@
 extends Node2D
 
-enum SceneEnum {NONE, BATON_TOWN}
+enum SceneEnum {NONE, BATON_TOWN, POLIS_CITY}
 @export var debug_scene: SceneEnum
 var debug_scene_map = {
     SceneEnum.BATON_TOWN: baton_town_room,
+    SceneEnum.POLIS_CITY: polis_city_room,
 }
 
 var rng = RandomNumberGenerator.new()
@@ -24,6 +25,7 @@ var switches = {
     "polis_vimarkos_trust": false,
     "polis_pella_introduction": false,
     "polis_himar_introduction": false,
+    "polis_himar_vanish": false,
 }
 
 var names = {
@@ -127,6 +129,18 @@ var boots = {
     "id": "boots",
     "name": "Boots",
     "description": "A warm pair of boots",
+}
+
+var spyglass = {
+    "id": "spyglass",
+    "name": "Spyglass",
+    "description": "A Mystic spyglass, said to reveal magic secrets."
+}
+
+var rope = {
+    "id": "rope",
+    "name": "Rope",
+    "description": "A rope made with an unfamiliar material.",
 }
 
 func use_professor_letter():
@@ -580,11 +594,40 @@ func polis_tavern_room():
             if switches.polis_pella_introduction:
                 people[1] = names.PELLA
 
+            if switches.polis_himar_vanish:
+                people.pop_front()
+
             talk_idx = await IO.menu(people, "Who do you want to talk to?")
             var person = people[talk_idx]
 
             if person in ["MYSTIC", "HIMAR"]:
-                pass
+                if not switches.polis_himar_introduction:
+                    switches.polis_himar_introduction = true
+                    await IO.scroll_text("'Hark, a wanderer approaches,' intones the robed figure, his voice low and melodic, his eyes glinting with mischief above the cloth masking his mouth.")
+                    await IO.scroll_text("'I am Himar, keeper of secrets and games...'")
+                    await IO.append_text("Dost thou dare to test thy fortune?'", false)
+                else:
+                    await IO.scroll_text("Himar’s eyes crinkle with recognition as you approach, the cloth over his mouth shifting slightly as if hiding a smile.")
+                    await IO.scroll_text("'Ah, ’tis thee again, wanderer,' he says, his voice smooth and melodic.")
+                    await IO.append_text("'What brings thee to my humble corner of the world this day?'")
+                    await IO.append_text("'Dost thou seek another dance with chance?'", false)
+                menu_idx = await IO.menu(["YES", "NO"])
+                if menu_idx == 0:
+                    if spyglass in CTX.inventory:
+                        await IO.scroll_text("As Himar begins shuffling the cups, you discreetly raise the mystic spyglass to your eye. Through its lens, the glowing pebble’s movement becomes clear, and you see the subtle magic Himar uses to manipulate it.")
+                        await IO.scroll_text("When Himar stops and gestures for you to choose, you confidently point to the correct cup. His eyes widen slightly above the cloth, a flicker of panic breaking through his usual composure.")
+                        await IO.scroll_text("'Thou... thou hast a keen eye, wanderer,' he stammers, his voice losing its usual smoothness. 'Few can see through the veil of illusion. But this... this cannot be!'")
+                        await IO.scroll_text("Before you can react, Himar mutters an incantation under his breath.")
+                        await IO.scroll_text("On the ground where he stood lies a coiled rope, glowing faintly with a soft, otherworldly light. You pick it up, feeling a strange warmth emanating from it.")
+                        CTX.inventory.append(rope)
+                        SFX.play_track(SFX.PICKUP)
+                        await IO.scroll_text("You pick up the rope.")
+                        switches.polis_himar_vanish = true
+                    else:
+                        await IO.scroll_text("You place your bet and point to a cup. Himar lifts it with a flourish, revealing... nothing but empty air. His eyes glimmer with mischief above the cloth covering his mouth.")
+                        await IO.scroll_text("'Fortune favors not the bold this day,' he says, his voice tinged with mock sympathy. 'Perchance thou shalt fare better anon.'")
+                else:
+                    await IO.scroll_text("Himar tilts his head slightly, the cloth shifting as if hiding a smirk. 'A prudent choice, wanderer. Not all are prepared to dance with chance. Shouldst thou change thy mind, I shall be here.'")
             elif person in ["WOMAN", "PELLA"]:
                 if not switches.polis_pella_introduction:
                     switches.polis_pella_introduction = true
