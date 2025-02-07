@@ -22,6 +22,8 @@ var switches = {
     "polis_vimarkos_introduction": false,
     "polis_vimarkos_distrust": false,
     "polis_vimarkos_trust": false,
+    "polis_pella_introduction": false,
+    "polis_himar_introduction": false,
 }
 
 var names = {
