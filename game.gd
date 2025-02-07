@@ -19,6 +19,9 @@ var switches = {
     "baton_lumarius_introduction": false,
     "baton_caligarius_introduction": false,
     "baton_letter_opened": false,
+    "polis_vimarkos_introduction": false,
+    "polis_vimarkos_distrust": false,
+    "polis_vimarkos_trust": false,
 }
 
 var names = {
@@ -49,6 +52,45 @@ var caligarius_one_liners = [
     "'I don’t just make boots; I make companions for the road. Every pair has a story waiting to be walked.'",
     "'The tavern’s where I hear the best tales. Some true, some not, but all worth a listen.'",
     "'If you ever need boots that can outlast a dragon’s breath, you know where to find me.'"
+]
+
+var vimarkos_one_liners = [
+    "'Polis thrives because its people are its strength. Without them, even the grandest city would crumble.'",
+    "'Leadership is not about power; it’s about responsibility. Every decision I make weighs heavily on my shoulders.'",
+    "'The city’s prosperity comes at a cost. Not all debts are paid in gold.'",
+    "'I’ve seen Polis grow from a humble town to what it is today. Its future depends on the choices we make now.'",
+    "'Ambition drives this city, but unchecked, it can lead to ruin. Balance is everything.'",
+    "'There are whispers in the shadows of Polis. Some say they’re just stories. I’m not so sure.'",
+    "'A mayor’s duty is to protect his people, even from threats they cannot see.'",
+    "'The world beyond Polis is vast and dangerous. We must remain vigilant.'",
+    "'Every stone in this city hall was laid with purpose. Just like every decision I make.'",
+    "'Trust is earned, not given. Remember that, especially in a city like Polis.'"
+]
+
+var vimarkos_distrust_one_liners = [
+    "'Trust is fragile. Once broken, it’s not easily repaired.'",
+    "'I hope your curiosity was worth the cost of my confidence in you.'",
+    "'Actions have consequences. Remember that.'",
+    "'I’ll assist you, but don’t mistake my cooperation for trust.'",
+    "'You’ve proven yourself resourceful, but not honorable.'",
+    "'I’ll keep an eye on you. Don’t make me regret it.'",
+    "'Polis has no room for those who meddle in others’ affairs.'",
+    "'You’ve made your choice. Now live with it.'",
+    "'I’ll help you find Vesequella, but only because she matters to this city.'",
+    "'Integrity is a rare commodity. Pity you’ve squandered yours.'"
+]
+
+var vimarkos_trust_one_liners = [
+    "'You’ve proven yourself trustworthy. That’s no small feat.'",
+    "'Integrity like yours is rare. Polis could use more of it.'",
+    "'You’ve earned my respect. Don’t take that lightly.'",
+    "'Your honesty speaks volumes. I won’t forget it.'",
+    "'Polis thrives because of people like you.'",
+    "'You’ve shown discretion and honor. A rare combination.'",
+    "'I trust you’ll handle this matter with the same care you’ve shown today.'",
+    "'You’ve done well. I’ll remember your service.'",
+    "'Your actions have earned my gratitude. Thank you.'",
+    "'Polis is safer in the hands of those who value integrity.'"
 ]
 
 func ITEMS_DEFN(): pass
@@ -216,7 +258,6 @@ func baton_professor_room():
             else:
                 await IO.scroll_text("\"Hello %s, good to see you.\"" % [CTX.player.name])
         elif menu_idx == 1:
-            print("ITEM")
             invn_idx = await IO.show_inventory()
             if invn_idx >= 0:
                 var item = CTX.inventory[invn_idx]
@@ -411,17 +452,90 @@ func polis_city_room():
 
         if menu_idx == 0:
             await IO.scroll_text("You enter the city hall")
-            baton_professor_room()
+            polis_city_hall_room()
             return
         elif menu_idx == 1:
             await IO.scroll_text("You enter the store")
-            baton_store_room()
+            polis_store_room()
             return
         elif menu_idx == 2:
             await IO.scroll_text("You enter the tavern")
-            baton_tavern_room()
+            polis_tavern_room()
             return
         elif menu_idx == 3:
             await IO.scroll_text("You leave the city")
             polis_world_node.run()
             return
+
+func polis_city_hall_room():
+    var menu_idx
+    var invn_idx
+    var text
+
+    var intro_text = "The grand hall is a cavernous space of polished stone, with towering banners, echoing footsteps, and a sense of weighty decisions hanging in the air."
+    await IO.scroll_text(intro_text)
+    while true:
+        text = "A middle-aged man with sharp features and a commanding presence, his serious demeanor and finely tailored robes speak of a life dedicated to leadership and responsibility."
+        if switches.polis_vimarkos_introduction:
+            text = "Vimarkos, the mayor of Polis, carries himself with the gravitas of a seasoned leader, his sharp eyes and measured words revealing both his wisdom and the weight of his duties."
+
+        menu_idx = await IO.menu(["TALK", "ITEM", "LEAVE"], text)
+
+        if menu_idx == 0:
+            if not switches.polis_vimarkos_introduction:
+                text = "'I am Vimarkos, Mayor of Polis. Speak plainly, for time is a luxury I cannot afford to waste.'"
+                switches.polis_vimarkos_introduction = true
+                await IO.scroll_text(text)
+            else:
+                text = vimarkos_one_liners.pick_random()
+                if switches.polis_vimarkos_distrust:
+                    text = vimarkos_distrust_one_liners.pick_random()
+                elif switches.polis_vimarkos_trust:
+                    text = vimarkos_trust_one_liners.pick_random()
+                await IO.scroll_text(text)
+        elif menu_idx == 1:
+            invn_idx = await IO.show_inventory()
+            if invn_idx >= 0:
+                var item = CTX.inventory[invn_idx]
+                if item.id == "professor_letter":
+                    await IO.scroll_text("You hand Vimarkos the professor's letter")
+                    if switches.baton_letter_opened:
+                        await IO.scroll_text("Vimarkos takes the opened letter from your hands, his eyes narrowing as he reads the broken seal. His jaw tightens, and for a moment, the room feels colder.")
+                        await IO.scroll_text("'You had no right to open this,' he says, his voice low and sharp. 'This is a breach of trust that I do not take lightly.'")
+                        await IO.scroll_text("He pauses, studying you for a moment, then exhales slowly.")
+                        await IO.scroll_text("'But given the circumstances, I understand why you felt compelled to do so. Vesequella’s disappearance is troubling, and time is of the essence.'")
+                        await IO.scroll_text("'I cannot offer you a reward for this... indiscretion,' he continues, his tone firm. 'However, I will tell you this: Vesequella was last seen in the company of a bard named Stathis. He frequents the taverns near the eastern market. If anyone knows what happened to her, it would be him.'")
+                        await IO.scroll_text("Vimarkos folds the letter and places it on his desk. 'Now, if you’ll excuse me, I have a city to run.'")
+                    else:
+                        await IO.scroll_text("Vimarkos takes the letter from your hands, his expression softening as he notices the unbroken seal. He nods approvingly.")
+                        await IO.scroll_text("'You’ve done well to deliver this unopened,' he says, his tone appreciative. 'Integrity is a rare quality, and it deserves to be rewarded.'")
+                        await IO.scroll_text("He reaches into a drawer and retrieves a small pouch, placing it on the desk in front of you. 'Take this as a token of my gratitude. It’s not much, but it’s the least I can do.'")
+                        await IO.scroll_text("'As for Vesequella,' he continues, his voice growing serious, 'she was last seen in the company of a bard named Stathis. He frequents the taverns near the eastern market. If anyone knows what happened to her, it would be him.'")
+                        await IO.scroll_text("Vimarkos leans back in his chair, his gaze thoughtful. 'I trust you’ll follow this lead with the same discretion you’ve shown today.'")
+                elif item.use_function:
+                    await item.use_function.call()
+                else:
+                    await IO.scroll_text(item.description)
+        elif menu_idx == 2:
+            polis_city_room()
+            return
+
+func polis_store_room():
+    var menu_idx
+
+    while true:
+        var text = "The shop is a cozy haven of warmth, its walls lined with thick fur cloaks, sturdy boots, and woolen garments, all crafted to brave the harshest winters."
+        menu_idx = await IO.menu(["BUY", "SELL", "LEAVE"], text)
+
+        if menu_idx == 0:
+            pass
+        if menu_idx == 1:
+            pass
+        elif menu_idx == 2:
+            await IO.scroll_text("You leave the shop.")
+            polis_city_room()
+            return
+
+
+func polis_tavern_room():
+    pass
