@@ -134,4 +134,4 @@ description = "You stand at the edge of a sprawling city, its shadowed silhouett
 north_node = NodePath("../BW4")
 east_node = NodePath("../BW2")
 game_node = NodePath("../..")
-enter_function = "polis_enter_room"
+enter_function = "polis_city_room"
