@@ -5,7 +5,7 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_smcu5")
-debug_scene = 2
+debug_scene = 3
 
 [node name="World" type="Node" parent="."]
 
@@ -126,7 +126,7 @@ description = "Shimmering under the desert sun, the quiet town of colorful tents
 east_node = NodePath("../BN2")
 west_node = NodePath("../BW5")
 game_node = NodePath("../..")
-enter_function = "yerkink_enter_room"
+enter_function = "yerkink_village_room"
 
 [node name="Polis" type="Node" parent="World" node_paths=PackedStringArray("north_node", "east_node", "game_node")]
 script = ExtResource("2_114ai")

@@ -1,18 +1,20 @@
 extends Node2D
 
-enum SceneEnum {NONE, BATON_TOWN, POLIS_CITY}
+enum SceneEnum {NONE, BATON_TOWN, POLIS_CITY, YERKINK_VILLAGE}
 @export var debug_scene: SceneEnum
 var debug_scene_map = {
     SceneEnum.BATON_TOWN: baton_town_room,
     SceneEnum.POLIS_CITY: polis_city_room,
+    SceneEnum.YERKINK_VILLAGE: yerkink_village_room,
 }
 
 var rng = RandomNumberGenerator.new()
 
 @onready var baton_world_node: WorldNode = $World/Baton
 @onready var polis_world_node: WorldNode = $World/Polis
+@onready var yerkink_world_node: WorldNode = $World/Yerkink
 
-func SWITCHES_DEFN(): pass
+func SWITCHES(): pass
 var switches = {
     "baton_professor_quest_received": false,
     "baton_professor_quest_completed": false,
@@ -26,6 +28,10 @@ var switches = {
     "polis_pella_introduction": false,
     "polis_himar_introduction": false,
     "polis_himar_vanish": false,
+    "yerkink_rope_restored": false,
+    "yerkink_aman_introduction": false,
+    "yerkink_aris_introduction": false,
+    "yerkink_aris_given_token": false,
 }
 
 var names = {
@@ -112,7 +118,7 @@ var pella_one_liners = [
     "'I hate the rain. It ruins my hair and makes the tavern smell like wet dog.'"
 ]
 
-func ITEMS_DEFN(): pass
+func ITEMS(): pass
 var potion = {
     "id": "potion",
     "name": "Potion",
@@ -637,8 +643,137 @@ func polis_tavern_room():
                     text = pella_one_liners.pick_random()
                     await IO.scroll_text(text)
             elif person == "CANCEL":
-                break
+                pass
         elif menu_idx == 1:
             await IO.scroll_text("You leave the tavern.")
             polis_city_room()
+            return
+
+func YERKINK_ROOMS(): pass
+func yerkink_village_room():
+    var menu_idx
+    var invn_idx
+
+    while true:
+        var text = "Yerkink rises from the desert sands, its Mystics moving like shadows beneath the sun, their faces wrapped in cloth, while the towering bottle at its center stands silent and still, its runes faintly glowing."
+        if switches.yerkink_rope_restored:
+            text = "Yerkink rises from the desert sands, its Mystics moving like shadows beneath the sun, their faces wrapped in cloth, as the glowing magic rope stretches skyward, a bridge to the city above the clouds."
+
+        menu_idx = await IO.menu(["BOTTLE", "STORE", "TAVERN", "LEAVE"], text)
+
+        if menu_idx == 0:
+            await IO.scroll_text("You approach the bottle.")
+            yerkink_bottle_room()
+            return
+        elif menu_idx == 1:
+            await IO.scroll_text("You enter the store.")
+            yerkink_store_room()
+            return
+        elif menu_idx == 2:
+            await IO.scroll_text("You enter the tavern.")
+            yerkink_tavern_room()
+            return
+        elif menu_idx == 3:
+            await IO.scroll_text("You leave the village.")
+            yerkink_world_node.run()
+            return
+
+func yerkink_bottle_room():
+    var menu_idx
+    var invn_idx
+
+
+    while true:
+        var text = "The bottle stands before you, its smooth surface cool to the touch and etched with glowing runes that pulse faintly, like a heartbeat. The open top yawns wide, empty and silent, as if yearning for something lost."
+        if switches.yerkink_rope_restored:
+            text = "The bottle thrums with a low, resonant energy, its runes blazing with light as the magic rope spirals upward from its open top, a luminous thread weaving into the heavens, alive with power."
+
+        menu_idx = await IO.menu(["ITEMS", "LEAVE"], text)
+        if menu_idx == 0:
+            invn_idx = await IO.show_inventory()
+            if invn_idx >= 0:
+                var item = CTX.inventory[invn_idx]
+                if item == rope:
+                    await IO.scroll_text("You restored the rope!")
+                    CTX.inventory.remove_at(invn_idx)
+                    switches.yerkink_rope_restored = true
+                elif item.use_function:
+                    await item.use_function.call()
+                else:
+                    await IO.scroll_text(item.description)
+        elif menu_idx == 1:
+            await IO.scroll_text("You step away from the bottle")
+            yerkink_village_room()
+            return
+
+func yerkink_store_room():
+    var menu_idx
+    var invn_idx
+    var shop_idx
+
+    while true:
+        var text = "The shop is a dim, sand-scented haven, its walls lined with shelves of ancient scrolls, their edges glowing faintly with runes that whisper of forgotten secrets."
+        menu_idx = await IO.menu(["BUY", "SELL", "LEAVE"], text)
+
+        if menu_idx == 0:
+            var shop_items = ["FOG SCROLL", "FLASH SCROLL", "WARP SCROLL"]
+            await IO.scroll_text("\"Take a look and see what you like.\"")
+            shop_idx = await IO.show_grid_menu(shop_items)
+
+            await IO.scroll_text("You chose %s, that costs %d, do you want to buy it?" % [shop_items[shop_idx], shop_idx])
+        if menu_idx == 1:
+            invn_idx = await IO.show_inventory()
+            if invn_idx >= 0:
+                await IO.scroll_text(CTX.inventory[invn_idx])
+        elif menu_idx == 2:
+            await IO.scroll_text("You leave the shop.")
+            polis_city_room()
+            return
+
+
+func yerkink_tavern_room():
+    var menu_idx
+    var invn_idx
+    var talk_idx
+    var text
+
+    while true:
+        text = "The tavern greets you with the warm glow of lanterns, the hum of murmured conversations, and the rich scent of spiced wine, a haven from the desert’s relentless sun."
+        menu_idx = await IO.menu(["TALK", "LEAVE"], text)
+
+        if menu_idx == 0:
+            var people = ["MYSTIC 1", "MYSTIC 2", "CANCEL"]
+
+            if switches.yerkink_aman_introduction:
+                people[0] = names.AMAN
+            if switches.yerkink_aris_introduction:
+                people[1] = names.ARIS
+
+            talk_idx = await IO.menu(people, "Who do you want to talk to?")
+            var person = people[talk_idx]
+
+            if person in ["MYSTIC 1", "AMAN"]:
+                await IO.scroll_text("AMAN")
+            elif person in ["MYSTIC 2", "ARIS"]:
+                if not switches.yerkink_aris_introduction:
+                    await IO.scroll_text("A middle-aged Mystic sits at a corner table, his robes dusty from the desert winds. His face is weathered but kind, and his eyes gleam with a quiet wisdom. A small, intricately carved spyglass rests on the table before him.")
+
+                if not switches.yerkink_aris_given_token:
+                    await IO.scroll_text("The Mystic looks up as you approach, his voice low and measured. 'Greetings, traveler. I am Aris. If thou seekest the truth hidden from mortal eyes, I can aid thee—but all things come at a cost.'")
+                    await IO.append_text("'Hast thou a token to offer?'", false)
+                    var choice_idx = await IO.menu(["YES", "NO"])
+                    if choice_idx == 0:
+                        if true:
+                            switches.yerkink_aris_given_token = true
+                            await IO.scroll_text("Aris nods approvingly as you hand over the token. 'A fair exchange,' he says, sliding the spyglass across the table. 'This artifact shall reveal what lies beyond the veil. Use it wisely, for not all truths are meant to be seen.'")
+                        else:
+                            await IO.scroll_text("Aris sighs softly, his expression sympathetic.")
+                            await IO.scroll_text("'Without a token, I cannot part with the spyglass. Seek one out, and return when thou art ready. The desert is generous to those who listen to its whispers.'")
+                    else:
+                        await IO.scroll_text("Aris tilts his head slightly, his expression unreadable. 'As thou wishest, traveler. But remember: the desert guards its secrets closely, and not all paths are open to those who hesitate.'")
+            elif person == "CANCEL":
+                pass
+        elif menu_idx == 1:
+            await IO.scroll_text("You leave the tavern.")
+            yerkink_village_room()
             return
