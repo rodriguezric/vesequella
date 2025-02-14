@@ -118,6 +118,45 @@ var pella_one_liners = [
     "'I hate the rain. It ruins my hair and makes the tavern smell like wet dog.'"
 ]
 
+var aris_one_liners = [
+    "'The spyglass reveals much, but not all. Some truths are best left hidden, even from the keenest eye.'",
+    "'The desert whispers its secrets to those who listen. Dost thou hear its voice?'",
+    "'Magic is but a thread in the tapestry of the world. The spyglass shows thee the weave, but not the hand that guides it.'",
+    "'Beware the illusions of the desert. What seems real may be but a mirage, and what seems false may hold the greatest truth.'",
+    "'The Paran is not the only bond between earth and sky. There are other threads, older and more fragile.'",
+    "'Tricks are but a shadow of true magic. The spyglass will show thee the light behind the veil.'",
+    "'The Yerevand watch from above, but they are not the only ones who see. The desert has eyes of its own.'",
+    "'The runes on the spyglass are ancient, their meaning known only to the Mystics. Treat it with care, for it is a piece of our history.'",
+    "'The token thou gavest me was but a key. The spyglass is the door. What lies beyond is for thee to discover.'",
+    "'Magic is a gift and a burden. Use the spyglass wisely, for not all who seek the truth are ready to bear it.'"
+]
+
+var aman_one_liners_before = [
+    "'The Paran’s absence is a wound upon the earth. We must heal it, lest the desert itself turn against us.'",
+    "'The Yerevand grow restless. Without the Paran, the bond between our peoples frays.'",
+    "'Himar’s betrayal is a shadow upon the Mystics. The Paran must be returned, no matter the cost.'",
+    "'The desert whispers of danger. The Paran’s light is needed now more than ever.'",
+    "'The Paran is not a mere tool—it is a living thread, a symbol of unity. Its loss is a blow to us all.'",
+    "'The runes upon the bottle grow dim. Without the Paran, their power fades.'",
+    "'The Yerevand watch from above, but their patience is not infinite. The Paran must be restored.'",
+    "'The desert’s secrets are many, but none so vital as the Paran. Seek it with haste.'",
+    "'The Paran’s light once guided us. Now, we wander in shadow.'",
+    "'The bond between earth and sky is fragile. Without the Paran, it may shatter.'"
+]
+
+var aman_one_liners_after = [
+    "'The Paran’s light shines once more. The bond between earth and sky is whole again.'",
+    "'The Yerevand sing thy praises, traveler. Thou hast done what many thought impossible.'",
+    "'The runes upon the bottle glow with renewed vigor. The Paran’s return has awakened them.'",
+    "'The desert’s whispers are kinder now. The Paran’s light soothes its restless spirit.'",
+    "'Himar’s shadow fades in the light of the Paran. Thy deeds have undone his mischief.'",
+    "'The Paran’s song is a balm to the earth. Yerkink owes thee a debt beyond measure.'",
+    "'The Yerevand watch with gratitude. The bond between our peoples is stronger than ever.'",
+    "'The Paran’s light guides us once more. Thy courage has restored our path.'",
+    "'The desert’s heart beats anew. The Paran’s return has brought it peace.'",
+    "'The Paran’s light is a beacon of hope. Thy actions have saved us all.'"
+]
+
 func ITEMS(): pass
 var potion = {
     "id": "potion",
@@ -727,7 +766,7 @@ func yerkink_store_room():
                 await IO.scroll_text(CTX.inventory[invn_idx])
         elif menu_idx == 2:
             await IO.scroll_text("You leave the shop.")
-            polis_city_room()
+            yerkink_village_room()
             return
 
 
@@ -753,7 +792,28 @@ func yerkink_tavern_room():
             var person = people[talk_idx]
 
             if person in ["MYSTIC 1", "AMAN"]:
-                await IO.scroll_text("AMAN")
+                if not switches.yerkink_aman_introduction:
+                    await IO.scroll_text("The Mystic stands tall and composed, her robes flowing like liquid shadow against the golden sands. Her face is framed by a tightly wrapped turban, leaving only her piercing eyes visible, sharp and unwavering. A faint glow emanates from the runes embroidered on her sleeves, hinting at her deep connection to the mystical arts.")
+                    await IO.scroll_text("'I am Aman,' she intones, her voice steady and resonant. 'Ambassador to the Yerevand and guardian of the Paran. Its absence doth weigh heavily upon us all. Pray, traveler, what brings thee to Yerkink?'", false)
+                else:
+                    await IO.scroll_text("'Hail traveler. How may I help you?'", false)
+                    await IO.scroll_text("Aman’s piercing eyes meet yours as you approach, her expression as composed as ever.")
+                    await IO.scroll_text("'Thou returnest, traveler. The desert’s winds have guided thee back to Yerkink. What news dost thou bring of the Paran?'", false)
+
+                while true:
+                    menu_idx = await IO.menu(["TALK", "ITEM", "CANCEL"])
+                    if menu_idx == 0:
+                        if switches.yerkink_rope_restored:
+                            text = aman_one_liners_before.pick_random()
+                        else:
+                            text = aman_one_liners_after.pick_random()
+                        await IO.scroll_text(text, false)
+                    elif menu_idx == 1:
+                        invn_idx = await IO.show_inventory()
+                        await IO.scroll_text("Some debug invn text", false)
+                    elif menu_idx == 2:
+                        break
+
             elif person in ["MYSTIC 2", "ARIS"]:
                 if not switches.yerkink_aris_introduction:
                     await IO.scroll_text("A middle-aged Mystic sits at a corner table, his robes dusty from the desert winds. His face is weathered but kind, and his eyes gleam with a quiet wisdom. A small, intricately carved spyglass rests on the table before him.")
@@ -771,6 +831,9 @@ func yerkink_tavern_room():
                             await IO.scroll_text("'Without a token, I cannot part with the spyglass. Seek one out, and return when thou art ready. The desert is generous to those who listen to its whispers.'")
                     else:
                         await IO.scroll_text("Aris tilts his head slightly, his expression unreadable. 'As thou wishest, traveler. But remember: the desert guards its secrets closely, and not all paths are open to those who hesitate.'")
+                else:
+                    text = aris_one_liners.pick_random()
+                    await IO.scroll_text(text)
             elif person == "CANCEL":
                 pass
         elif menu_idx == 1:
