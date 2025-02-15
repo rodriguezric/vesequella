@@ -803,7 +803,7 @@ func yerkink_tavern_room():
                 while true:
                     menu_idx = await IO.menu(["TALK", "ITEM", "CANCEL"])
                     if menu_idx == 0:
-                        if switches.yerkink_rope_restored:
+                        if not switches.yerkink_rope_restored:
                             text = aman_one_liners_before.pick_random()
                         else:
                             text = aman_one_liners_after.pick_random()
