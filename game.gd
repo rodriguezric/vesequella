@@ -347,6 +347,8 @@ func baton_professor_room():
             return
 
 func baton_town_room():
+    if MUSIC.current_track != MUSIC.BATON:
+        MUSIC.play_track(MUSIC.BATON)
     var menu_idx
     var invn_idx
     var move_idx
@@ -372,6 +374,7 @@ func baton_town_room():
             baton_library_room()
             return
         elif menu_idx == 4:
+            MUSIC.fade_out()
             await IO.scroll_text("You leave the town")
             baton_world_node.run()
             return

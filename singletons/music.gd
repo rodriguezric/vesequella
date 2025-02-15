@@ -2,6 +2,7 @@ extends AudioStreamPlayer
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+const BATON = preload("res://music/baton.ogg")
 const BEST_FRIEND = preload("res://music/chip_best_friend.mp3")
 const FACES = preload("res://music/chip_faces.mp3")
 const BOUNCE = preload("res://music/chip_midnight_bounce.mp3")
@@ -17,16 +18,28 @@ const BOSS = preload("res://music/mmx4_boss.mp3")
 var current_track: AudioStream
 
 func play_track(track_name: AudioStream):
-    var fade_in = false
-    if playing and track_name != current_track:
-        animation_player.play("fade_out")
-        await animation_player.animation_finished
-        fade_in = true
-
+    if volume_db < 0:
+        fade_in()
     current_track = track_name
     stream = track_name
     stream.loop = true
     play()
 
-    if fade_in:
-        animation_player.play("fade_in")
+func fade_in():
+    var tween = get_tree().create_tween()
+    volume_db = -80
+    tween.tween_property(
+        MUSIC,
+        "volume_db",
+        0,
+        5,
+    )
+
+func fade_out():
+    var tween = get_tree().create_tween()
+    tween.tween_property(
+        MUSIC,
+        "volume_db",
+        -80,
+        10
+    )
