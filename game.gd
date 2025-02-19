@@ -1,12 +1,17 @@
 extends Node2D
 
 enum SceneEnum {NONE, BATON_TOWN, POLIS_CITY, YERKINK_VILLAGE}
+enum ItemEnum {POTION, TORCH, SPYGLASS, BOOTS, ROPE}
+
 @export var debug_scene: SceneEnum
 var debug_scene_map = {
     SceneEnum.BATON_TOWN: baton_town_room,
     SceneEnum.POLIS_CITY: polis_city_room,
     SceneEnum.YERKINK_VILLAGE: yerkink_village_room,
 }
+
+@export var debug_inventory: Array[ItemEnum]
+
 
 var rng = RandomNumberGenerator.new()
 
@@ -188,6 +193,14 @@ var rope = {
     "description": "A rope made with an unfamiliar material.",
 }
 
+var debug_item_map = {
+    ItemEnum.POTION: potion,
+    ItemEnum.TORCH: torch,
+    ItemEnum.SPYGLASS: spyglass,
+    ItemEnum.BOOTS: boots,
+    ItemEnum.ROPE: rope,
+}
+
 func use_professor_letter():
     await IO.scroll_text("This is the letter from the professor of Baton to Vimarkos, mayor of Polis.")
     await IO.append_text("Do you want to read it?", false)
@@ -224,6 +237,10 @@ var professor_letter = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+    if debug_inventory:
+        for item_enum in debug_inventory:
+            var item = debug_item_map[item_enum]
+            CTX.inventory.append(item.duplicate())
     if debug_scene:
         await debug_scene_map[debug_scene].call()
     else:
@@ -723,7 +740,6 @@ func yerkink_village_room():
 func yerkink_bottle_room():
     var menu_idx
     var invn_idx
-
 
     while true:
         var text = "The bottle stands before you, its smooth surface cool to the touch and etched with glowing runes that pulse faintly, like a heartbeat. The open top yawns wide, empty and silent, as if yearning for something lost."
