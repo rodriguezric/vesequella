@@ -47,8 +47,8 @@ script = ExtResource("2_114ai")
 description = "A dirt road cuts through the endless grasslands, stretching east and west; to the west, the plains roll on undisturbed, while to the east, the air grows heavier with the faint hum of distant voices and the scent of woodsmoke, hinting at nearby life."
 east_node = NodePath("../Baton")
 west_node = NodePath("../BW2")
-encounters = Array[int]([0])
-encounter_rate = 100
+encounters = Array[int]([0, 1])
+encounter_rate = 50
 game_node = NodePath("../..")
 
 [node name="BW2" type="Node" parent="World" node_paths=PackedStringArray("north_node", "east_node", "west_node", "game_node")]
@@ -57,6 +57,8 @@ description = "You find yourself at a crossroads amid rolling plains, where the 
 north_node = NodePath("../BW3")
 east_node = NodePath("../BW1")
 west_node = NodePath("../Polis")
+encounters = Array[int]([0, 1])
+encounter_rate = 50
 game_node = NodePath("../..")
 
 [node name="BW3" type="Node" parent="World" node_paths=PackedStringArray("north_node", "south_node", "west_node", "game_node")]
@@ -65,6 +67,8 @@ description = "The cracked earth is dotted with dry grasses and thorny shrubs, f
 north_node = NodePath("../BW5")
 south_node = NodePath("../BW2")
 west_node = NodePath("../BW4")
+encounters = Array[int]([0, 1])
+encounter_rate = 50
 game_node = NodePath("../..")
 
 [node name="BW4" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "game_node")]
@@ -72,6 +76,8 @@ script = ExtResource("2_114ai")
 description = "Dark waters ripple beneath twisted trees, the air thick with decay and humid whispers, while dry winds beckon from the east and faint echoes of life drift up from the south."
 south_node = NodePath("../Polis")
 east_node = NodePath("../BW3")
+encounters = Array[int]([0, 1])
+encounter_rate = 50
 game_node = NodePath("../..")
 
 [node name="BW5" type="Node" parent="World" node_paths=PackedStringArray("south_node", "east_node", "game_node")]
