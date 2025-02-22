@@ -634,7 +634,7 @@ func polis_store_room():
         if menu_idx == 1:
             invn_idx = await IO.show_inventory()
             if invn_idx >= 0:
-                await IO.scroll_text(CTX.inventory[invn_idx])
+                await IO.scroll_text(CTX.inventory[invn_idx].description)
         elif menu_idx == 2:
             await IO.scroll_text("You leave the shop.")
             polis_city_room()
