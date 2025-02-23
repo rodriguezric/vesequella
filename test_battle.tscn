@@ -4,4 +4,4 @@
 
 [node name="TestBattle" type="Node"]
 script = ExtResource("1_gbn24")
-enemy_id = 4
+enemy_id = 1

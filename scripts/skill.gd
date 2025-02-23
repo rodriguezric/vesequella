@@ -95,19 +95,23 @@ func trip(source, _target):
     await IO.append_text("%s takes %d damage!" % [source.name, dmg])
 
 func pulses_eerily(source, target):
-    if not source.pulse:
+    if not source.get("pulse"):
         await IO.scroll_text("%s pulses eerily..." % [source.name])
-        source.pulse = true
+        source["pulse"] = true
     else:
         await IO.scroll_text("%s errupts in a slimey explosion!" % [source.name])
         source.hp -= 5
+        SFX.play_track(SFX.HIT)
+        VFX.shake_window_message()
         await IO.append_text("%s takes 5 damage" % [source.name])
+
         target.hp -= 5
+        SFX.play_track(SFX.HIT)
+        VFX.shake_hero_stats()
         await IO.append_text("%s takes 5 damage" % [target.name])
 
         if target == CTX.player:
             IO.hero_stats_changed.emit()
-            VFX.shake_hero_stats()
 
 func bolt(source, target):
     await IO.scroll_text("%s tries to cast a spell..." % [source.name])

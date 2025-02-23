@@ -22,6 +22,9 @@ func run():
         var encounter = encounters.pick_random()
         await BATTLE.run(encounter)
 
+    if MUSIC.current_track != MUSIC.OVERWORLD:
+        MUSIC.play_track(MUSIC.OVERWORLD)
+
     while true:
         var menu_list = ["ENTER", "MOVE", "ITEM"]
         var func_list = [enter_fn, move_fn, item_fn]
@@ -38,6 +41,7 @@ func run():
 func enter_fn() -> bool:
     # Boolean return represents whether the caller should return out of the
     # while true game loop
+    MUSIC.stop()
     await IO.scroll_text("You enter")
     game_node.call(enter_function)
     return true
@@ -80,6 +84,6 @@ func item_fn() -> bool:
     # while true game loop
     invn_idx = await IO.show_inventory()
     if invn_idx > -1:
-        await IO.show_text(CTX.inventory[invn_idx])
+        await IO.show_text(CTX.inventory[invn_idx].description)
 
     return false

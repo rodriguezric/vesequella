@@ -27,6 +27,7 @@ OP="*res://scripts/op.gd"
 BATTLE="*res://scripts/battle.gd"
 ROOM="*res://scripts/room.gd"
 MUSIC="*res://singletons/music.tscn"
+GAME="*res://game.gd"
 
 [display]
 
