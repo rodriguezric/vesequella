@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://brwjgooqhmbpg"]
+[gd_scene load_steps=4 format=3 uid="uid://brwjgooqhmbpg"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_smcu5"]
 [ext_resource type="Script" path="res://world_node.gd" id="2_114ai"]
+[ext_resource type="Script" path="res://shop.gd" id="3_cvqwk"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_smcu5")
-debug_scene = 2
+running = true
+debug_scene = 1
 debug_inventory = Array[int]([4, 2])
 
 [node name="World" type="Node" parent="."]
@@ -142,3 +144,11 @@ north_node = NodePath("../BW4")
 east_node = NodePath("../BW2")
 game_node = NodePath("../..")
 enter_function = "polis_city_room"
+
+[node name="Shop" type="Node" parent="."]
+script = ExtResource("3_cvqwk")
+
+[node name="BatonShop" type="Node" parent="Shop"]
+script = ExtResource("3_cvqwk")
+items = Array[int]([0, 5, 6])
+prices = Array[int]([5, 10, 10])

@@ -1,7 +1,10 @@
 extends Node2D
 
 enum SceneEnum {NONE, BATON_TOWN, POLIS_CITY, YERKINK_VILLAGE}
-enum ItemEnum {POTION, TORCH, SPYGLASS, BOOTS, ROPE}
+enum ItemEnum {POTION, TORCH, SPYGLASS, BOOTS, ROPE, BOLT_SCROLL, HEAL_SCROLL}
+
+# Hack for preventing global running intro during title
+@export var running: bool = false
 
 @export var debug_scene: SceneEnum
 var debug_scene_map = {
@@ -18,6 +21,9 @@ var rng = RandomNumberGenerator.new()
 @onready var baton_world_node: WorldNode = $World/Baton
 @onready var polis_world_node: WorldNode = $World/Polis
 @onready var yerkink_world_node: WorldNode = $World/Yerkink
+
+@onready var baton_shop: Shop = $Shop/BatonShop
+
 
 func SWITCHES(): pass
 var switches = {
@@ -193,12 +199,26 @@ var rope = {
     "description": "A rope made with an unfamiliar material.",
 }
 
-var debug_item_map = {
+var bolt_scroll = {
+    "id": "bolt_scroll",
+    "name": "Bolt Scroll",
+    "description": "A magical scroll for casting the Bolt spell.",
+}
+
+var heal_scroll = {
+    "id": "heal_scroll",
+    "name": "Heal Scroll",
+    "description": "A magical scroll for casting the Heal spell.",
+}
+
+var item_map = {
     ItemEnum.POTION: potion,
     ItemEnum.TORCH: torch,
     ItemEnum.SPYGLASS: spyglass,
     ItemEnum.BOOTS: boots,
     ItemEnum.ROPE: rope,
+    ItemEnum.BOLT_SCROLL: bolt_scroll,
+    ItemEnum.HEAL_SCROLL: heal_scroll,
 }
 
 func use_professor_letter():
@@ -237,9 +257,12 @@ var professor_letter = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+    if not running:
+        return
+
     if debug_inventory:
         for item_enum in debug_inventory:
-            var item = debug_item_map[item_enum]
+            var item = item_map[item_enum]
             CTX.inventory.append(item.duplicate())
     if debug_scene:
         await debug_scene_map[debug_scene].call()
@@ -366,6 +389,7 @@ func baton_professor_room():
 func baton_town_room():
     if MUSIC.current_track != MUSIC.BATON:
         MUSIC.play_track(MUSIC.BATON)
+
     var menu_idx
     var invn_idx
     var move_idx
@@ -391,7 +415,7 @@ func baton_town_room():
             baton_library_room()
             return
         elif menu_idx == 4:
-            MUSIC.fade_out()
+            MUSIC.stop()
             await IO.scroll_text("You leave the town")
             baton_world_node.run()
             return
@@ -406,17 +430,11 @@ func baton_store_room():
         menu_idx = await IO.menu(["BUY", "SELL", "LEAVE"], text)
 
         if menu_idx == 0:
-            var shop_items = ["POTION", "BOLT SCROLL", "HEAL SCROLL"]
-            await IO.scroll_text("\"Take a look and see what you like.\"")
-            shop_idx = await IO.show_grid_menu(shop_items)
-
-            await IO.scroll_text("You chose %s, that costs %d, do you want to buy it?" % [shop_items[shop_idx], shop_idx])
-
-            pass
+            await baton_shop.run()
         elif menu_idx == 1:
             invn_idx = await IO.show_inventory()
             if invn_idx >= 0:
-                await IO.scroll_text(CTX.inventory[invn_idx])
+                await IO.scroll_text(CTX.inventory[invn_idx].description)
         elif menu_idx == 2:
             await IO.scroll_text("You leave the shop.")
             baton_town_room()
@@ -540,6 +558,9 @@ func baton_library_room():
 
 func POLIS_ROOMS(): pass
 func polis_city_room():
+    if MUSIC.current_track != MUSIC.POLIS:
+        MUSIC.play_track(MUSIC.POLIS)
+
     var menu_idx
 
     while true:
@@ -559,6 +580,7 @@ func polis_city_room():
             polis_tavern_room()
             return
         elif menu_idx == 3:
+            MUSIC.stop()
             await IO.scroll_text("You leave the city")
             polis_world_node.run()
             return
@@ -634,7 +656,7 @@ func polis_store_room():
         if menu_idx == 1:
             invn_idx = await IO.show_inventory()
             if invn_idx >= 0:
-                await IO.scroll_text(CTX.inventory[invn_idx])
+                await IO.scroll_text(CTX.inventory[invn_idx].description)
         elif menu_idx == 2:
             await IO.scroll_text("You leave the shop.")
             polis_city_room()
