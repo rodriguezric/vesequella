@@ -1,7 +1,17 @@
 extends Node2D
 
 enum SceneEnum {NONE, BATON_TOWN, POLIS_CITY, YERKINK_VILLAGE}
-enum ItemEnum {POTION, TORCH, SPYGLASS, BOOTS, ROPE, BOLT_SCROLL, HEAL_SCROLL}
+enum ItemEnum {
+    POTION,
+    TORCH,
+    SPYGLASS,
+    BOOTS,
+    ROPE,
+    BOLT_SCROLL,
+    HEAL_SCROLL,
+    FOG_SCROLL,
+    BRIGHT_SCROLL,
+}
 
 # Hack for preventing global running intro during title
 @export var running: bool = false
@@ -15,7 +25,6 @@ var debug_scene_map = {
 
 @export var debug_inventory: Array[ItemEnum]
 
-
 var rng = RandomNumberGenerator.new()
 
 @onready var baton_world_node: WorldNode = $World/Baton
@@ -23,6 +32,8 @@ var rng = RandomNumberGenerator.new()
 @onready var yerkink_world_node: WorldNode = $World/Yerkink
 
 @onready var baton_shop: Shop = $Shop/BatonShop
+@onready var polis_shop: Shop = $Shop/PolisShop
+@onready var yerkink_shop: Shop = $Shop/YerkinkShop
 
 
 func SWITCHES(): pass
@@ -211,6 +222,18 @@ var heal_scroll = {
     "description": "A magical scroll for casting the Heal spell.",
 }
 
+var fog_scroll = {
+    "id": "fog_scroll",
+    "name": "Fog Scroll",
+    "description": "A magical scroll for creating a fog.",
+}
+
+var bright_scroll = {
+    "id": "bright_scroll",
+    "name": "Bright Scroll",
+    "description": "A magical scroll for shining light"
+}
+
 var item_map = {
     ItemEnum.POTION: potion,
     ItemEnum.TORCH: torch,
@@ -219,6 +242,8 @@ var item_map = {
     ItemEnum.ROPE: rope,
     ItemEnum.BOLT_SCROLL: bolt_scroll,
     ItemEnum.HEAL_SCROLL: heal_scroll,
+    ItemEnum.FOG_SCROLL: fog_scroll,
+    ItemEnum.BRIGHT_SCROLL: bright_scroll,
 }
 
 func use_professor_letter():
@@ -648,11 +673,7 @@ func polis_store_room():
         menu_idx = await IO.menu(["BUY", "SELL", "LEAVE"], text)
 
         if menu_idx == 0:
-            var shop_items = ["TORCH", "SNOW JACKET", "HAMMER"]
-            await IO.scroll_text("\"Take a look and see what you like.\"")
-            shop_idx = await IO.show_grid_menu(shop_items)
-
-            await IO.scroll_text("You chose %s, that costs %d, do you want to buy it?" % [shop_items[shop_idx], shop_idx])
+            await polis_shop.run()
         if menu_idx == 1:
             invn_idx = await IO.show_inventory()
             if invn_idx >= 0:
@@ -732,6 +753,9 @@ func polis_tavern_room():
 
 func YERKINK_ROOMS(): pass
 func yerkink_village_room():
+    if MUSIC.current_track != MUSIC.YERKINK:
+        MUSIC.play_track(MUSIC.YERKINK)
+
     var menu_idx
     var invn_idx
 
@@ -755,6 +779,7 @@ func yerkink_village_room():
             yerkink_tavern_room()
             return
         elif menu_idx == 3:
+            MUSIC.stop()
             await IO.scroll_text("You leave the village.")
             yerkink_world_node.run()
             return
@@ -796,11 +821,7 @@ func yerkink_store_room():
         menu_idx = await IO.menu(["BUY", "SELL", "LEAVE"], text)
 
         if menu_idx == 0:
-            var shop_items = ["FOG SCROLL", "FLASH SCROLL", "WARP SCROLL"]
-            await IO.scroll_text("\"Take a look and see what you like.\"")
-            shop_idx = await IO.show_grid_menu(shop_items)
-
-            await IO.scroll_text("You chose %s, that costs %d, do you want to buy it?" % [shop_items[shop_idx], shop_idx])
+            await yerkink_shop.run()
         if menu_idx == 1:
             invn_idx = await IO.show_inventory()
             if invn_idx >= 0:

@@ -7,8 +7,7 @@
 [node name="Game" type="Node2D"]
 script = ExtResource("1_smcu5")
 running = true
-debug_scene = 1
-debug_inventory = Array[int]([4, 2])
+debug_scene = 3
 
 [node name="World" type="Node" parent="."]
 
@@ -152,3 +151,13 @@ script = ExtResource("3_cvqwk")
 script = ExtResource("3_cvqwk")
 items = Array[int]([0, 5, 6])
 prices = Array[int]([5, 10, 10])
+
+[node name="PolisShop" type="Node" parent="Shop"]
+script = ExtResource("3_cvqwk")
+items = Array[int]([1, 0, 3])
+prices = Array[int]([2, 5, 10])
+
+[node name="YerkinkShop" type="Node" parent="Shop"]
+script = ExtResource("3_cvqwk")
+items = Array[int]([7, 8])
+prices = Array[int]([10, 10])

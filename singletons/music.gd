@@ -16,6 +16,7 @@ const ZEAL = preload("res://music/ct_zeal.mp3")
 const BOSS = preload("res://music/mmx4_boss.mp3")
 const OVERWORLD = preload("res://music/overworld.ogg")
 const POLIS = preload("res://music/polis.ogg")
+const YERKINK = preload("res://music/yerkink.ogg")
 
 var current_track: AudioStream
 
