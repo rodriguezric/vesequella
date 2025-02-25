@@ -61,6 +61,8 @@ var names = {
     "CALIGARIUS": "CALIGARIUS",
     "PELLA": "PELLA",
     "HIMAR": "HIMAR",
+    "ARIS": "ARIS",
+    "AMAN": "AMAN",
 }
 var limarius_one_liners = [
     "'Did you know some slimes can change color based on their mood? This one’s always blue—must be a chill little guy!'",
@@ -156,7 +158,6 @@ var aris_one_liners = [
 var aman_one_liners_before = [
     "'The Paran’s absence is a wound upon the earth. We must heal it, lest the desert itself turn against us.'",
     "'The Yerevand grow restless. Without the Paran, the bond between our peoples frays.'",
-    "'Himar’s betrayal is a shadow upon the Mystics. The Paran must be returned, no matter the cost.'",
     "'The desert whispers of danger. The Paran’s light is needed now more than ever.'",
     "'The Paran is not a mere tool—it is a living thread, a symbol of unity. Its loss is a blow to us all.'",
     "'The runes upon the bottle grow dim. Without the Paran, their power fades.'",
@@ -859,6 +860,7 @@ func yerkink_tavern_room():
 
             if person in ["MYSTIC 1", "AMAN"]:
                 if not switches.yerkink_aman_introduction:
+                    switches.yerkink_aman_introduction = true
                     await IO.scroll_text("The Mystic stands tall and composed, her robes flowing like liquid shadow against the golden sands. Her face is framed by a tightly wrapped turban, leaving only her piercing eyes visible, sharp and unwavering. A faint glow emanates from the runes embroidered on her sleeves, hinting at her deep connection to the mystical arts.")
                     await IO.scroll_text("'I am Aman,' she intones, her voice steady and resonant. 'Ambassador to the Yerevand and guardian of the Paran. Its absence doth weigh heavily upon us all. Pray, traveler, what brings thee to Yerkink?'", false)
                 else:
@@ -882,6 +884,7 @@ func yerkink_tavern_room():
 
             elif person in ["MYSTIC 2", "ARIS"]:
                 if not switches.yerkink_aris_introduction:
+                    switches.yerkink_aris_introduction = true
                     await IO.scroll_text("A middle-aged Mystic sits at a corner table, his robes dusty from the desert winds. His face is weathered but kind, and his eyes gleam with a quiet wisdom. A small, intricately carved spyglass rests on the table before him.")
 
                 if not switches.yerkink_aris_given_token:
@@ -892,6 +895,8 @@ func yerkink_tavern_room():
                         if true:
                             switches.yerkink_aris_given_token = true
                             await IO.scroll_text("Aris nods approvingly as you hand over the token. 'A fair exchange,' he says, sliding the spyglass across the table. 'This artifact shall reveal what lies beyond the veil. Use it wisely, for not all truths are meant to be seen.'")
+                            await IO.scroll_text("Aris hands you the spyglass")
+                            CTX.inventory.append(spyglass.duplicate())
                         else:
                             await IO.scroll_text("Aris sighs softly, his expression sympathetic.")
                             await IO.scroll_text("'Without a token, I cannot part with the spyglass. Seek one out, and return when thou art ready. The desert is generous to those who listen to its whispers.'")
