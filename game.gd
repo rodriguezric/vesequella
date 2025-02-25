@@ -353,7 +353,11 @@ func intro_scene() -> void:
     var intro_scene_7 = [
         "After hearing your name, the professor nods."
     ]
+
     await proc_text_list(intro_scene_7)
+    IO.name_label.text = CTX.player.name
+    IO.hero_stats_container.visible = true
+    MUSIC.play_track(MUSIC.BATON)
 
     var intro_scene_8 = [
         "\"Well then, %s, it is a pleasure to welcome you." % [player_name],
