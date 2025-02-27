@@ -895,6 +895,7 @@ func yerkink_tavern_room():
                         if true:
                             switches.yerkink_aris_given_token = true
                             await IO.scroll_text("Aris nods approvingly as you hand over the token. 'A fair exchange,' he says, sliding the spyglass across the table. 'This artifact shall reveal what lies beyond the veil. Use it wisely, for not all truths are meant to be seen.'")
+                            SFX.play_track(SFX.PICKUP)
                             await IO.scroll_text("Aris hands you the spyglass")
                             CTX.inventory.append(spyglass.duplicate())
                         else:
