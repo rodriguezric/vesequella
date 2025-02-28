@@ -181,16 +181,30 @@ var aman_one_liners_after = [
 ]
 
 func ITEMS(): pass
+func use_item(invn_idx, source=null, target=null):
+    var item = CTX.inventory[invn_idx]
+    var fn = GAME.item_skill_map[item["id"]]
+    await IO.scroll_text(item.description)
+    await IO.append_text("Do you want to use it?", false)
+
+    var menu_idx = await IO.menu(["YES", "NO"])
+    if menu_idx == 0:
+        await fn.call(source, target)
+        if item.consumable:
+            CTX.inventory.remove_at(invn_idx)
+
 var potion = {
-    "id": "potion",
+    "id": ItemEnum.POTION,
     "name": "Potion",
     "description": "A medicinal potion",
+    "consumable": true,
 }
 
 var torch = {
     "id": "torch",
     "name": "Torch",
     "description": "Chat GPT the description",
+    "consumable": true,
 }
 
 var boots = {
@@ -202,13 +216,15 @@ var boots = {
 var spyglass = {
     "id": "spyglass",
     "name": "Spyglass",
-    "description": "A Mystic spyglass, said to reveal magic secrets."
+    "description": "A Mystic spyglass, said to reveal magic secrets.",
+    "consumable": false,
 }
 
 var rope = {
     "id": "rope",
     "name": "Rope",
     "description": "A rope made with an unfamiliar material.",
+    "consumable": false,
 }
 
 var bolt_scroll = {
@@ -233,6 +249,10 @@ var bright_scroll = {
     "id": "bright_scroll",
     "name": "Bright Scroll",
     "description": "A magical scroll for shining light"
+}
+
+var item_skill_map = {
+    ItemEnum.POTION: SKILL.potion,
 }
 
 var item_map = {

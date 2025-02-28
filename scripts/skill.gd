@@ -135,7 +135,14 @@ func bolt(source, target):
         SFX.play_track(SFX.MISS)
         await IO.append_text("but doesn't have enough energy")
 
-
+func potion(source, _target):
+    await IO.scroll_text("%s drinks a potion..." % [source.name])
+    var hp = rng.randi_range(2, 5)
+    VFX.flash_window(Color.WHITE)
+    SFX.play_track(SFX.PICKUP)
+    await IO.append_text("and recovers %d HP!" % [hp])
+    source.hp += hp
+    IO.hero_stats_changed.emit()
 
 func fizzle(source, _target):
     await IO.scroll_text("%s tries to cast a spell..." % [source.name])
