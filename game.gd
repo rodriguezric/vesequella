@@ -231,24 +231,28 @@ var bolt_scroll = {
     "id": "bolt_scroll",
     "name": "Bolt Scroll",
     "description": "A magical scroll for casting the Bolt spell.",
+    "consumable": false,
 }
 
 var heal_scroll = {
     "id": "heal_scroll",
     "name": "Heal Scroll",
     "description": "A magical scroll for casting the Heal spell.",
+    "consumable": false,
 }
 
 var fog_scroll = {
     "id": "fog_scroll",
     "name": "Fog Scroll",
     "description": "A magical scroll for creating a fog.",
+    "consumable": false,
 }
 
 var bright_scroll = {
     "id": "bright_scroll",
     "name": "Bright Scroll",
-    "description": "A magical scroll for shining light"
+    "description": "A magical scroll for shining light",
+    "consumable": false,
 }
 
 var item_skill_map = {
