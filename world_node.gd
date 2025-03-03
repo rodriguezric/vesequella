@@ -25,17 +25,43 @@ func run():
     if MUSIC.current_track != MUSIC.OVERWORLD:
         MUSIC.play_track(MUSIC.OVERWORLD)
 
+    IO.north.disabled = true
+    IO.south.disabled = true
+    IO.east.disabled = true
+    IO.west.disabled = true
+    IO.nav_enter.disabled = true
+
+    if north_node:
+        IO.north.disabled = false
+
+    if south_node:
+        IO.south.disabled = false
+
+    if east_node:
+        IO.east.disabled = false
+
+    if west_node:
+        IO.west.disabled = false
+
+    if enter_function:
+        IO.nav_enter.disabled = false
+
     while true:
-        var menu_list = ["ENTER", "MOVE", "ITEM"]
-        var func_list = [enter_fn, move_fn, item_fn]
-
-        if not enter_function:
-            menu_list.pop_front()
-            func_list.pop_front()
-
-        menu_idx = await IO.menu(menu_list, description)
-
-        if await func_list[menu_idx].call():
+        var nav_idx = await IO.show_nav(description)
+        if nav_idx == IO.NavEnum.NORTH:
+            north_node.run()
+            return
+        elif nav_idx == IO.NavEnum.SOUTH:
+            south_node.run()
+            return
+        elif nav_idx == IO.NavEnum.EAST:
+            east_node.run()
+            return
+        elif nav_idx == IO.NavEnum.WEST:
+            west_node.run()
+            return
+        elif nav_idx == IO.NavEnum.ENTER:
+            await enter_fn()
             return
 
 func enter_fn() -> bool:
@@ -45,39 +71,6 @@ func enter_fn() -> bool:
     await IO.scroll_text("You enter")
     game_node.call(enter_function)
     return true
-
-func move_fn() -> bool:
-    # Boolean return represents whether the caller should return out of the
-    # while true game loop
-    var move_list = []
-    var node_list = []
-
-    if north_node:
-        move_list.append("NORTH")
-        node_list.append(north_node)
-
-    if south_node:
-        move_list.append("SOUTH")
-        node_list.append(south_node)
-
-    if east_node:
-        move_list.append("EAST")
-        node_list.append(east_node)
-
-    if west_node:
-        move_list.append("WEST")
-        node_list.append(west_node)
-
-    move_list.append("CANCEL")
-
-    move_idx = await IO.menu(move_list, "Which direction will you move?")
-
-    if move_idx > -1 and move_idx < move_list.size() - 1:
-        await IO.scroll_text("You travel %s" % move_list[move_idx])
-        node_list[move_idx].run()
-        return true
-
-    return false
 
 func item_fn() -> bool:
     # Boolean return represents whether the caller should return out of the
