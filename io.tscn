@@ -105,7 +105,7 @@ offset_top = -168.0
 offset_bottom = -112.0
 grow_horizontal = 0
 grow_vertical = 2
-text = ">"
+text = "↵"
 
 [node name="VMenu" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -254,3 +254,54 @@ text = "SP"
 [node name="SPValLabel" type="Label" parent="VBoxContainer/HeroStatsContainer/HBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SPContaner"]
 layout_mode = 2
 text = "10"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="NavMenu" type="GridContainer" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+columns = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/NavMenu"]
+layout_mode = 2
+
+[node name="North" type="Button" parent="CenterContainer/NavMenu"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "N"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CenterContainer/NavMenu"]
+layout_mode = 2
+
+[node name="West" type="Button" parent="CenterContainer/NavMenu"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "W"
+
+[node name="Enter" type="Button" parent="CenterContainer/NavMenu"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "↵"
+
+[node name="East" type="Button" parent="CenterContainer/NavMenu"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "E"
+
+[node name="CenterContainer3" type="CenterContainer" parent="CenterContainer/NavMenu"]
+layout_mode = 2
+
+[node name="South" type="Button" parent="CenterContainer/NavMenu"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+text = "S"
+
+[node name="CenterContainer4" type="CenterContainer" parent="CenterContainer/NavMenu"]
+layout_mode = 2

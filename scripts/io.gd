@@ -1,5 +1,13 @@
 extends Control
 
+enum NavEnum { NORTH, SOUTH, EAST, WEST, ENTER }
+
+@onready var north: Button = $CenterContainer/NavMenu/North
+@onready var west: Button = $CenterContainer/NavMenu/West
+@onready var nav_enter: Button = $CenterContainer/NavMenu/Enter
+@onready var east: Button = $CenterContainer/NavMenu/East
+@onready var south: Button = $CenterContainer/NavMenu/South
+
 @onready var ap: AnimationPlayer = $ap
 @onready var label: Label = $WindowMessage/MarginContainer/Label
 @onready var timer: Timer = $WindowMessage/Timer
@@ -12,6 +20,7 @@ extends Control
 @onready var line_edit: LineEdit = $LineEditContainer/LineEdit
 @onready var line_edit_container: HBoxContainer = $LineEditContainer
 @onready var advance_button: Button = $AdvanceButton
+@onready var nav_menu: GridContainer = $CenterContainer/NavMenu
 
 # Hero UI labels
 @onready var hero_stats_container: CenterContainer = $VBoxContainer/HeroStatsContainer
@@ -24,6 +33,7 @@ signal finished_displaying_text
 signal option_selected
 signal options_closed
 signal hero_stats_changed
+signal nav_sig
 
 var text := ""
 var finished := false
@@ -179,6 +189,12 @@ func _ready() -> void:
     advance_button.button_down.connect(_on_advance_button_down)
     hero_stats_changed.connect(_on_hero_stats_changed)
 
+    north.button_down.connect(func(): nav_sig.emit(NavEnum.NORTH))
+    south.button_down.connect(func(): nav_sig.emit(NavEnum.SOUTH))
+    east.button_down.connect(func(): nav_sig.emit(NavEnum.EAST))
+    west.button_down.connect(func(): nav_sig.emit(NavEnum.WEST))
+    nav_enter.button_down.connect(func(): nav_sig.emit(NavEnum.ENTER))
+
 func advance_text():
     if finished:
         visible = false
@@ -213,3 +229,21 @@ func _on_advance_button_down():
 func _on_hero_stats_changed():
     hp_val_label.text = str(CTX.player.hp)
     sp_val_label.text = str(CTX.player.sp)
+
+func show_nav(text: String = ""):
+    await IO.scroll_text(text, false)
+
+    var message_active_flg = advance_button.visible
+
+    active = false
+    if message_active_flg:
+        advance_button.visible = false
+
+    nav_menu.visible = true
+
+    nav_enter.grab_focus()
+    var nav_idx = await nav_sig
+
+    nav_menu.visible = false
+
+    return nav_idx
