@@ -201,55 +201,56 @@ var potion = {
 }
 
 var torch = {
-    "id": "torch",
+    "id": ItemEnum.TORCH,
     "name": "Torch",
     "description": "Chat GPT the description",
     "consumable": true,
 }
 
 var boots = {
-    "id": "boots",
+    "id": ItemEnum.BOOTS,
     "name": "Boots",
     "description": "A warm pair of boots",
+    "consumable": false,
 }
 
 var spyglass = {
-    "id": "spyglass",
+    "id": ItemEnum.SPYGLASS,
     "name": "Spyglass",
     "description": "A Mystic spyglass, said to reveal magic secrets.",
     "consumable": false,
 }
 
 var rope = {
-    "id": "rope",
+    "id": ItemEnum.ROPE,
     "name": "Rope",
     "description": "A rope made with an unfamiliar material.",
     "consumable": false,
 }
 
 var bolt_scroll = {
-    "id": "bolt_scroll",
+    "id": ItemEnum.BOLT_SCROLL,
     "name": "Bolt Scroll",
     "description": "A magical scroll for casting the Bolt spell.",
     "consumable": false,
 }
 
 var heal_scroll = {
-    "id": "heal_scroll",
+    "id": ItemEnum.HEAL_SCROLL,
     "name": "Heal Scroll",
     "description": "A magical scroll for casting the Heal spell.",
     "consumable": false,
 }
 
 var fog_scroll = {
-    "id": "fog_scroll",
+    "id": ItemEnum.FOG_SCROLL,
     "name": "Fog Scroll",
     "description": "A magical scroll for creating a fog.",
     "consumable": false,
 }
 
 var bright_scroll = {
-    "id": "bright_scroll",
+    "id": ItemEnum.BRIGHT_SCROLL,
     "name": "Bright Scroll",
     "description": "A magical scroll for shining light",
     "consumable": false,
