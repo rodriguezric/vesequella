@@ -32,4 +32,3 @@ func _button_pressed(_idx: int):
     SFX.play_track(SFX.UISELECT)
     option_selected.emit(_idx)
     visible = false
-
