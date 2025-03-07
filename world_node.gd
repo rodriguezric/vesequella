@@ -63,6 +63,8 @@ func run():
         elif nav_idx == IO.NavEnum.ENTER:
             await enter_fn()
             return
+        elif nav_idx == IO.MENU_IDX:
+            await IO.show_esc_menu()
 
 func enter_fn() -> bool:
     # Boolean return represents whether the caller should return out of the
