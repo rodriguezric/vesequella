@@ -21,6 +21,7 @@ enum NavEnum { NORTH, SOUTH, EAST, WEST, ENTER }
 @onready var line_edit_container: HBoxContainer = $LineEditContainer
 @onready var advance_button: Button = $AdvanceButton
 @onready var nav_menu: GridContainer = $CenterContainer/NavMenu
+@onready var menu_button: Button = $MenuButton
 
 # Hero UI labels
 @onready var hero_stats_container: CenterContainer = $VBoxContainer/HeroStatsContainer
@@ -40,6 +41,7 @@ var finished := false
 var active := true
 
 const MAX_LINES = 9
+const MENU_IDX = 99
 
 func show_text(_text: String, close_flg := true):
     show_text_impl(_text)
@@ -162,10 +164,12 @@ func show_grid_menu(options: Array):
     visible = true
     grid_menu.visible = true
     grid_menu_panel.visible = true
+    advance_button.visible = true
     grid_menu.show_options(options)
     var idx = await grid_menu.option_selected
 
     grid_menu.visible = false
+    advance_button.visible = false
     grid_menu_panel.visible = false
     window_message.visible = true
     active = true
@@ -194,6 +198,12 @@ func _ready() -> void:
     east.button_down.connect(func(): nav_sig.emit(NavEnum.EAST))
     west.button_down.connect(func(): nav_sig.emit(NavEnum.WEST))
     nav_enter.button_down.connect(func(): nav_sig.emit(NavEnum.ENTER))
+    menu_button.button_down.connect(
+        func():
+            v_menu.option_selected.emit(MENU_IDX)
+            grid_menu.option_selected.emit(MENU_IDX)
+            nav_sig.emit(MENU_IDX)
+    )
 
 func advance_text():
     if finished:
@@ -247,3 +257,40 @@ func show_nav(text: String = ""):
     nav_menu.visible = false
 
     return nav_idx
+
+
+func show_esc_menu():
+    var options = ["ITEM", "STATS", "SAVE", "TITLE", "CANCEL"]
+
+    var choice_idx = await IO.menu(options)
+
+    if choice_idx == 0:
+        var invn_idx = await IO.show_inventory()
+        if invn_idx > -1 and invn_idx < MENU_IDX:
+            await GAME.use_item(invn_idx)
+    elif choice_idx == 1:
+        var text_lines = [
+            "Name: %s" % [CTX.player.name],
+            "HP:  %2d          SP:  %2d" % [CTX.player.hp, CTX.player.sp],
+            "ATK: %2d          DEF: %2d" % [CTX.player.atk, CTX.player.def],
+            "DEX: %2d          AGI: %2d" % [CTX.player.dex, CTX.player.agi],
+        ]
+        var text = "\n".join(text_lines)
+        await IO.show_text(text)
+    elif choice_idx == 2:
+        var save_options = ["YES", "NO"]
+        var save_idx = await IO.menu(save_options, "Are you sure you want to save?")
+        if save_idx == 0:
+            pass
+        elif save_idx == 1:
+            pass
+    elif choice_idx == 3:
+        var title_options = ["YES", "NO"]
+        var title_idx = await IO.menu(title_options, "Are you sure you want to quit to title?")
+        if title_idx == 0:
+            MUSIC.stop()
+            get_tree().change_scene_to_file("res://title.tscn")
+        elif title_idx == 1:
+            pass
+    elif choice_idx == 4:
+        pass
