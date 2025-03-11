@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://brwjgooqhmbpg"]
 
-[ext_resource type="Script" path="res://game.gd" id="1_smcu5"]
-[ext_resource type="Script" path="res://world_node.gd" id="2_114ai"]
-[ext_resource type="Script" path="res://shop.gd" id="3_cvqwk"]
+[ext_resource type="Script" uid="uid://hyck3t83bqmu" path="res://game.gd" id="1_smcu5"]
+[ext_resource type="Script" uid="uid://bgrmf2k3o67py" path="res://world_node.gd" id="2_114ai"]
+[ext_resource type="Script" uid="uid://bu8t31u6xux6s" path="res://shop.gd" id="3_cvqwk"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_smcu5")

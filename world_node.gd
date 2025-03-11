@@ -78,6 +78,6 @@ func item_fn() -> bool:
     # Boolean return represents whether the caller should return out of the
     # while true game loop
     invn_idx = await IO.show_inventory()
-    await GAME.use_item(invn_idx, CTX.player)
+    await CTX.use_item(invn_idx, CTX.player)
 
     return false

@@ -267,7 +267,7 @@ func show_esc_menu():
     if choice_idx == 0:
         var invn_idx = await IO.show_inventory()
         if invn_idx > -1 and invn_idx < MENU_IDX:
-            await GAME.use_item(invn_idx)
+            await CTX.use_item(invn_idx, CTX.player)
     elif choice_idx == 1:
         var text_lines = [
             "Name: %s" % [CTX.player.name],
@@ -294,3 +294,11 @@ func show_esc_menu():
             pass
     elif choice_idx == 4:
         pass
+
+func proc_text_list(text_list):
+    # Helper function for scrolling a list of texts
+    # It will clear the window and show the first text
+    # then append the remainder without clearing
+    await IO.scroll_text(text_list[0])
+    for text in text_list.slice(1):
+        await IO.append_text(text)

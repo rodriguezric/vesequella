@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dn8uuaaf8qi0i"]
 
 [ext_resource type="Texture2D" uid="uid://conarbt4nq4ib" path="res://images/VesequellaCover.png" id="1_5ynfl"]
-[ext_resource type="Script" path="res://scripts/title_scene.gd" id="1_rvsda"]
+[ext_resource type="Script" uid="uid://dty7r6f241cco" path="res://scripts/title_scene.gd" id="1_rvsda"]
 
 [node name="TitleScene" type="Control"]
 layout_mode = 3
