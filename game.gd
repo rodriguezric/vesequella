@@ -243,8 +243,8 @@ func baton_professor_room():
         menu_idx = await IO.menu(["TALK", "ITEM", "LEAVE"], text)
 
         if menu_idx == 0:
-            if not CTX.switches.baton_professor_quest_received:
-                CTX.switches.baton_professor_quest_received = true
+            if not SWITCHES.baton_professor_quest_received:
+                SWITCHES.baton_professor_quest_received = true
                 await IO.proc_text_list([
                     "\"Hello %s, I'm glad you stopped by." % [CTX.player.name],
                     "I have a request, please take this letter to Vimarkos in Polis.",
@@ -252,15 +252,15 @@ func baton_professor_room():
                 ])
                 await IO.scroll_text("The professor hands you a letter.")
                 CTX.inventory.append(CTX.professor_letter.duplicate())
-            elif not CTX.switches.baton_professor_quest_completed:
-                if CTX.switches.baton_letter_opened and CTX.professor_letter in CTX.inventory:
+            elif not SWITCHES.baton_professor_quest_completed:
+                if SWITCHES.baton_letter_opened and CTX.professor_letter in CTX.inventory:
                     await IO.scroll_text("'I see, you decided to read the letter. I suppose it was inevitible for you to discover. Please, still deliver the letter to Vimarkos.'")
                     await IO.scroll_text("'although...'")
                     await IO.append_text("'I don't believe he will be pleased that you opened his letter.'")
                 else:
                     await IO.scroll_text("The professor raises his eyes from the tomes.")
                     await IO.scroll_text("\"Please, deliver the letter and let me know what Vimarkos has to say.")
-            elif not CTX.switches.baton_professor_quest_rewarded:
+            elif not SWITCHES.baton_professor_quest_rewarded:
                 pass
             else:
                 await IO.scroll_text("\"Hello %s, good to see you.\"" % [CTX.player.name])
@@ -344,17 +344,17 @@ func baton_tavern_room():
         if menu_idx == 0:
             var people = ["OLD MAN", "BOY", "CANCEL"]
 
-            if CTX.switches.baton_caligarius_introduction:
+            if SWITCHES.baton_caligarius_introduction:
                 people[0] = names.CALIGARIUS
-            if CTX.switches.baton_lumarius_introduction:
+            if SWITCHES.baton_lumarius_introduction:
                 people[1] = names.LUMARIUS
 
             talk_idx = await IO.menu(people, "Who do you want to talk to?")
 
             # Caligarius
             if talk_idx == 0:
-                if not CTX.switches.baton_caligarius_introduction:
-                    CTX.switches.baton_caligarius_introduction = true
+                if not SWITCHES.baton_caligarius_introduction:
+                    SWITCHES.baton_caligarius_introduction = true
                     await IO.scroll_text("An elderly man with weathered hands and a kind smile greets you. His workshop is filled with leather, tools, and rows of finely crafted boots.")
                     await IO.scroll_text("'Welcome, traveler. I am Caligarius, a humble boot-maker. How may I assist you today?'", false)
                 else:
@@ -373,8 +373,8 @@ func baton_tavern_room():
 
             # Lumarius
             elif talk_idx == 1:
-                if not CTX.switches.baton_lumarius_introduction:
-                    CTX.switches.baton_lumarius_introduction = true
+                if not SWITCHES.baton_lumarius_introduction:
+                    SWITCHES.baton_lumarius_introduction = true
                     await IO.scroll_text("A young boy with a satchel full of jars approaches you, his eyes sparkling with excitement. Each jar clinks softly as he moves, containing slimes of various colors and sizes.")
                     await IO.scroll_text("'Hi there! My name’s Limarius, and I’m a slime collector!'")
                     await IO.append_text("'Do you like slimes too?'", false)
@@ -485,21 +485,21 @@ func polis_city_hall_room():
     await IO.scroll_text(intro_text)
     while true:
         text = "A middle-aged man with sharp features and a commanding presence, his serious demeanor and finely tailored robes speak of a life dedicated to leadership and responsibility."
-        if CTX.switches.polis_vimarkos_introduction:
+        if SWITCHES.polis_vimarkos_introduction:
             text = "Vimarkos, the mayor of Polis, carries himself with the gravitas of a seasoned leader, his sharp eyes and measured words revealing both his wisdom and the weight of his duties."
 
         menu_idx = await IO.menu(["TALK", "ITEM", "LEAVE"], text)
 
         if menu_idx == 0:
-            if not CTX.switches.polis_vimarkos_introduction:
+            if not SWITCHES.polis_vimarkos_introduction:
                 text = "'I am Vimarkos, Mayor of Polis. Speak plainly, for time is a luxury I cannot afford to waste.'"
-                CTX.switches.polis_vimarkos_introduction = true
+                SWITCHES.polis_vimarkos_introduction = true
                 await IO.scroll_text(text)
             else:
                 text = vimarkos_one_liners.pick_random()
-                if CTX.switches.polis_vimarkos_distrust:
+                if SWITCHES.polis_vimarkos_distrust:
                     text = vimarkos_distrust_one_liners.pick_random()
-                elif CTX.switches.polis_vimarkos_trust:
+                elif SWITCHES.polis_vimarkos_trust:
                     text = vimarkos_trust_one_liners.pick_random()
                 await IO.scroll_text(text)
         elif menu_idx == 1:
@@ -508,7 +508,7 @@ func polis_city_hall_room():
                 var item = CTX.inventory[invn_idx]
                 if item.id == CTX.ItemEnum.PROFESSOR_LETTER:
                     await IO.scroll_text("You hand Vimarkos the professor's letter")
-                    if CTX.switches.baton_letter_opened:
+                    if SWITCHES.baton_letter_opened:
                         await IO.scroll_text("Vimarkos takes the opened letter from your hands, his eyes narrowing as he reads the broken seal. His jaw tightens, and for a moment, the room feels colder.")
                         await IO.scroll_text("'You had no right to open this,' he says, his voice low and sharp. 'This is a breach of trust that I do not take lightly.'")
                         await IO.scroll_text("He pauses, studying you for a moment, then exhales slowly.")
@@ -563,20 +563,20 @@ func polis_tavern_room():
         if menu_idx == 0:
             var people = ["MYSTIC", "WOMAN", "CANCEL"]
 
-            if CTX.switches.polis_himar_introduction:
+            if SWITCHES.polis_himar_introduction:
                 people[0] = names.HIMAR
-            if CTX.switches.polis_pella_introduction:
+            if SWITCHES.polis_pella_introduction:
                 people[1] = names.PELLA
 
-            if CTX.switches.polis_himar_vanish:
+            if SWITCHES.polis_himar_vanish:
                 people.pop_front()
 
             talk_idx = await IO.menu(people, "Who do you want to talk to?")
             var person = people[talk_idx]
 
             if person in ["MYSTIC", "HIMAR"]:
-                if not CTX.switches.polis_himar_introduction:
-                    CTX.switches.polis_himar_introduction = true
+                if not SWITCHES.polis_himar_introduction:
+                    SWITCHES.polis_himar_introduction = true
                     await IO.scroll_text("'Hark, a wanderer approaches,' intones the robed figure, his voice low and melodic, his eyes glinting with mischief above the cloth masking his mouth.")
                     await IO.scroll_text("'I am Himar, keeper of secrets and games...'")
                     await IO.append_text("Dost thou dare to test thy fortune?'", false)
@@ -596,15 +596,15 @@ func polis_tavern_room():
                         CTX.inventory.append(CTX.rope)
                         SFX.play_track(SFX.PICKUP)
                         await IO.scroll_text("You pick up the rope.")
-                        CTX.switches.polis_himar_vanish = true
+                        SWITCHES.polis_himar_vanish = true
                     else:
                         await IO.scroll_text("You place your bet and point to a cup. Himar lifts it with a flourish, revealing... nothing but empty air. His eyes glimmer with mischief above the cloth covering his mouth.")
                         await IO.scroll_text("'Fortune favors not the bold this day,' he says, his voice tinged with mock sympathy. 'Perchance thou shalt fare better anon.'")
                 else:
                     await IO.scroll_text("Himar tilts his head slightly, the cloth shifting as if hiding a smirk. 'A prudent choice, wanderer. Not all are prepared to dance with chance. Shouldst thou change thy mind, I shall be here.'")
             elif person in ["WOMAN", "PELLA"]:
-                if not CTX.switches.polis_pella_introduction:
-                    CTX.switches.polis_pella_introduction = true
+                if not SWITCHES.polis_pella_introduction:
+                    SWITCHES.polis_pella_introduction = true
                     await IO.scroll_text("Sitting at a corner table with a half-empty mug of ale is a woman with a mischievous glint in her eye. Her auburn hair is tied back loosely, and her sleeves are rolled up as if she’s been here for hours.")
                     await IO.scroll_text("She notices you looking her way and waves you over with a grin. 'Come, sit! I’m Pella, and if you’re looking for good company—or a good story—you’ve come to the right place.'")
                 else:
@@ -627,7 +627,7 @@ func yerkink_village_room():
 
     while true:
         var text = "Yerkink rises from the desert sands, its Mystics moving like shadows beneath the sun, their faces wrapped in cloth, while the towering bottle at its center stands silent and still, its runes faintly glowing."
-        if CTX.switches.yerkink_rope_restored:
+        if SWITCHES.yerkink_rope_restored:
             text = "Yerkink rises from the desert sands, its Mystics moving like shadows beneath the sun, their faces wrapped in cloth, as the glowing magic rope stretches skyward, a bridge to the city above the clouds."
 
         menu_idx = await IO.menu(["BOTTLE", "STORE", "TAVERN", "LEAVE"], text)
@@ -656,7 +656,7 @@ func yerkink_bottle_room():
 
     while true:
         var text = "The bottle stands before you, its smooth surface cool to the touch and etched with glowing runes that pulse faintly, like a heartbeat. The open top yawns wide, empty and silent, as if yearning for something lost."
-        if CTX.switches.yerkink_rope_restored:
+        if SWITCHES.yerkink_rope_restored:
             text = "The bottle thrums with a low, resonant energy, its runes blazing with light as the magic rope spirals upward from its open top, a luminous thread weaving into the heavens, alive with power."
 
         menu_idx = await IO.menu(["ITEMS", "LEAVE"], text)
@@ -667,7 +667,7 @@ func yerkink_bottle_room():
                 if item == CTX.rope:
                     await IO.scroll_text("You restored the rope!")
                     CTX.inventory.remove_at(invn_idx)
-                    CTX.switches.yerkink_rope_restored = true
+                    SWITCHES.yerkink_rope_restored = true
                 elif item.use_function:
                     await item.use_function.call()
                 else:
@@ -711,17 +711,17 @@ func yerkink_tavern_room():
         if menu_idx == 0:
             var people = ["MYSTIC 1", "MYSTIC 2", "CANCEL"]
 
-            if CTX.switches.yerkink_aman_introduction:
+            if SWITCHES.yerkink_aman_introduction:
                 people[0] = names.AMAN
-            if CTX.switches.yerkink_aris_introduction:
+            if SWITCHES.yerkink_aris_introduction:
                 people[1] = names.ARIS
 
             talk_idx = await IO.menu(people, "Who do you want to talk to?")
             var person = people[talk_idx]
 
             if person in ["MYSTIC 1", "AMAN"]:
-                if not CTX.switches.yerkink_aman_introduction:
-                    CTX.switches.yerkink_aman_introduction = true
+                if not SWITCHES.yerkink_aman_introduction:
+                    SWITCHES.yerkink_aman_introduction = true
                     await IO.scroll_text("The Mystic stands tall and composed, her robes flowing like liquid shadow against the golden sands. Her face is framed by a tightly wrapped turban, leaving only her piercing eyes visible, sharp and unwavering. A faint glow emanates from the runes embroidered on her sleeves, hinting at her deep connection to the mystical arts.")
                     await IO.scroll_text("'I am Aman,' she intones, her voice steady and resonant. 'Ambassador to the Yerevand and guardian of the Paran. Its absence doth weigh heavily upon us all. Pray, traveler, what brings thee to Yerkink?'", false)
                 else:
@@ -732,7 +732,7 @@ func yerkink_tavern_room():
                 while true:
                     menu_idx = await IO.menu(["TALK", "ITEM", "CANCEL"])
                     if menu_idx == 0:
-                        if not CTX.switches.yerkink_rope_restored:
+                        if not SWITCHES.yerkink_rope_restored:
                             text = aman_one_liners_before.pick_random()
                         else:
                             text = aman_one_liners_after.pick_random()
@@ -744,17 +744,17 @@ func yerkink_tavern_room():
                         break
 
             elif person in ["MYSTIC 2", "ARIS"]:
-                if not CTX.switches.yerkink_aris_introduction:
-                    CTX.switches.yerkink_aris_introduction = true
+                if not SWITCHES.yerkink_aris_introduction:
+                    SWITCHES.yerkink_aris_introduction = true
                     await IO.scroll_text("A middle-aged Mystic sits at a corner table, his robes dusty from the desert winds. His face is weathered but kind, and his eyes gleam with a quiet wisdom. A small, intricately carved spyglass rests on the table before him.")
 
-                if not CTX.switches.yerkink_aris_given_token:
+                if not SWITCHES.yerkink_aris_given_token:
                     await IO.scroll_text("The Mystic looks up as you approach, his voice low and measured. 'Greetings, traveler. I am Aris. If thou seekest the truth hidden from mortal eyes, I can aid thee—but all things come at a cost.'")
                     await IO.append_text("'Hast thou a token to offer?'", false)
                     var choice_idx = await IO.menu(["YES", "NO"])
                     if choice_idx == 0:
                         if true:
-                            CTX.switches.yerkink_aris_given_token = true
+                            SWITCHES.yerkink_aris_given_token = true
                             await IO.scroll_text("Aris nods approvingly as you hand over the token. 'A fair exchange,' he says, sliding the spyglass across the table. 'This artifact shall reveal what lies beyond the veil. Use it wisely, for not all truths are meant to be seen.'")
                             SFX.play_track(SFX.PICKUP)
                             await IO.scroll_text("Aris hands you the spyglass")

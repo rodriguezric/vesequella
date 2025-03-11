@@ -119,27 +119,6 @@ func dice_roll(sides, modifier=0):
     # Roll 1d{sides} + modifier
     return rng.randi_range(1, sides) + modifier
 
-func SWITCHES(): pass
-
-var switches = {
-    "baton_professor_quest_received": false,
-    "baton_professor_quest_completed": false,
-    "baton_professor_quest_rewarded": false,
-    "baton_lumarius_introduction": false,
-    "baton_caligarius_introduction": false,
-    "baton_letter_opened": false,
-    "polis_vimarkos_introduction": false,
-    "polis_vimarkos_distrust": false,
-    "polis_vimarkos_trust": false,
-    "polis_pella_introduction": false,
-    "polis_himar_introduction": false,
-    "polis_himar_vanish": false,
-    "yerkink_rope_restored": false,
-    "yerkink_aman_introduction": false,
-    "yerkink_aris_introduction": false,
-    "yerkink_aris_given_token": false,
-}
-
 func ITEMS(): pass
 
 enum ItemEnum {
@@ -157,15 +136,16 @@ enum ItemEnum {
 
 func use_item(invn_idx, source=null, target=null):
     var item = CTX.inventory[invn_idx]
-    var fn = CTX.item_skill_map[item["id"]]
     await IO.scroll_text(item.description)
-    await IO.append_text("Do you want to use it?", false)
+    if item["id"] in CTX.item_skill_map:
+        var fn = CTX.item_skill_map[item["id"]]
+        await IO.append_text("Do you want to use it?", false)
 
-    var menu_idx = await IO.menu(["YES", "NO"])
-    if menu_idx == 0:
-        await fn.call(source, target)
-        if item.consumable:
-            CTX.inventory.remove_at(invn_idx)
+        var menu_idx = await IO.menu(["YES", "NO"])
+        if menu_idx == 0:
+            await fn.call(source, target)
+            if item.consumable:
+                CTX.inventory.remove_at(invn_idx)
 
 var potion = {
     "id": ItemEnum.POTION,
@@ -247,9 +227,9 @@ func use_professor_letter():
     await IO.append_text("Do you want to read it?", false)
     var choice_idx = await IO.menu(["YES", "NO"])
     if choice_idx == 0:
-        if not switches.baton_letter_opened:
+        if not SWITCHES.baton_letter_opened:
             await IO.scroll_text("You open the envelope")
-            switches.baton_letter_opened = true
+            SWITCHES.baton_letter_opened = true
 
         var letter_text_list = [
             "To the Esteemed Mayor of Polis,",
@@ -266,7 +246,7 @@ func use_professor_letter():
         ]
         await IO.proc_text_list(letter_text_list)
     elif choice_idx == 1:
-        if not switches.baton_letter_opened:
+        if not SWITCHES.baton_letter_opened:
             await IO.scroll_text("You decide to keep the envelope sealed.")
 
 var professor_letter = {
