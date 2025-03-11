@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://d3x7yb6ob2an1"]
 
-[ext_resource type="Script" path="res://singletons/vfx.gd" id="1_si5d8"]
+[ext_resource type="Script" uid="uid://dbpw33thtdgjp" path="res://singletons/vfx.gd" id="1_si5d8"]
 
 [sub_resource type="Animation" id="Animation_wy778"]
 length = 0.001
@@ -66,10 +66,10 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qo3m3"]
 _data = {
-"RESET": SubResource("Animation_wy778"),
-"fadein": SubResource("Animation_qgd7w"),
-"fadeout": SubResource("Animation_s3s5u"),
-"flash": SubResource("Animation_07x76")
+&"RESET": SubResource("Animation_wy778"),
+&"fadein": SubResource("Animation_qgd7w"),
+&"fadeout": SubResource("Animation_s3s5u"),
+&"flash": SubResource("Animation_07x76")
 }
 
 [node name="transition_screen" type="CanvasLayer"]

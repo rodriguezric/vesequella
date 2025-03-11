@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://btkn8cndv3tno"]
 
-[ext_resource type="Script" path="res://scripts/io.gd" id="1_chw1k"]
+[ext_resource type="Script" uid="uid://dwhdn6007j73v" path="res://scripts/io.gd" id="1_chw1k"]
 [ext_resource type="Theme" uid="uid://8c4dt20nruvo" path="res://io.tres" id="2_cd5wq"]
 [ext_resource type="FontFile" uid="uid://cetimtkdjojjd" path="res://fonts/prstart.ttf" id="3_44a63"]
-[ext_resource type="Script" path="res://scripts/box_menu.gd" id="3_yj6my"]
-[ext_resource type="Script" path="res://scripts/grid_menu.gd" id="4_nvxd1"]
+[ext_resource type="Script" uid="uid://baqgmx40hep5c" path="res://scripts/box_menu.gd" id="3_yj6my"]
+[ext_resource type="Script" uid="uid://b04rp4wy8xe8" path="res://scripts/grid_menu.gd" id="4_nvxd1"]
 
 [sub_resource type="Animation" id="Animation_qe3eq"]
 length = 0.001
@@ -42,9 +42,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_edcvl"]
 _data = {
-"RESET": SubResource("Animation_qe3eq"),
-"shake_hero_stats": SubResource("Animation_tahxv"),
-"shake_window": SubResource("Animation_gxmft")
+&"RESET": SubResource("Animation_qe3eq"),
+&"shake_hero_stats": SubResource("Animation_tahxv"),
+&"shake_window": SubResource("Animation_gxmft")
 }
 
 [node name="IO" type="Control"]
@@ -178,7 +178,7 @@ text = "SUBMIT"
 
 [node name="ap" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_edcvl")
+&"": SubResource("AnimationLibrary_edcvl")
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
